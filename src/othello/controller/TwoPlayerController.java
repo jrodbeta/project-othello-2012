@@ -22,10 +22,8 @@ public class TwoPlayerController implements Controller
   
   public TwoPlayerController(Listener l)
   {
-    active = true;
     this.l = l;
-    b = new Board(BoardGUI.ROWS);
-    update();
+    newGame();
   }
   
   private static String sideToString(Board b)

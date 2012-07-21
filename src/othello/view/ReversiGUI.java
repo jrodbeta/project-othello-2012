@@ -13,7 +13,9 @@ import java.awt.event.*;
 
 public class ReversiGUI extends JFrame implements Listener
 {
-  private JLabel gameMessage = new JLabel(" ");
+	private static final long serialVersionUID = 1L; // needed for Eclipse
+	
+	private JLabel gameMessage = new JLabel(" ");
   private JLabel gameTurn = new JLabel(" ");
   private JLabel gameScore = new JLabel(" ");
   private JButton newGame = new JButton("New Game");
@@ -72,7 +74,7 @@ public class ReversiGUI extends JFrame implements Listener
   public void setTurn(String m) { gameTurn.setText(m); }
   public void setScore(String m) { gameScore.setText(m); }
   public void setController(Controller c) { this.c = c; }
-  public void repaint() { gameBoard.repaint(); }
+  public void repaint() { gameBoard.validate(); gameBoard.repaint(); }
   
   public class BoardActionListener implements MouseListener
   {
@@ -94,6 +96,3 @@ public class ReversiGUI extends JFrame implements Listener
     }
   }
 }
-
-// the actual board (canvas)
-

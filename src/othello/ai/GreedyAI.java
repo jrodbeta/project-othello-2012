@@ -5,18 +5,21 @@ import othello.model.Board;
 
 public class GreedyAI implements ReversiAI
 {
+  private int size;
+
+  public void setSize(int size) { this.size = size; }
+
   public Board nextMove(Board prev, int lastx, int lasty)
   {
     Board b = new Board(prev), best = null;
 
     int score = -1;
-    int size = b.getSize();
 
-    for(int i = 0; i < size; i++)
+    for(int j = 0; j < size; j++)
     {
-      for(int j = 0; j < size; j++)
+      for(int i = 0; i < size; i++)
       {
-        if(b.move(i,j)) // valid move
+        if(b.move(i, j)) // valid move
         {
           if(b.getScore() > score)
           {
