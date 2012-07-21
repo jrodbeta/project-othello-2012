@@ -1,3 +1,4 @@
+package othello.controller;
 // interface for the controller in the Model-View-Controller for Reversi
 
 public interface Controller

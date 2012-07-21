@@ -1,3 +1,5 @@
+package othello.model;
+
 // interface for a class that listens to the controller
 
 public interface Listener

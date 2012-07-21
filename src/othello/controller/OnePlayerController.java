@@ -1,24 +1,34 @@
-// controller for a two player reversi game
+package othello.controller;
+import othello.ai.GreedyAI;
+import othello.ai.ReversiAI;
+import othello.model.Board;
+import othello.model.Listener;
+import othello.view.BoardGUI;
+import othello.view.ReversiGUI;
 
-public class TwoPlayerController implements Controller
+// a controller, where one player (BLACK) is a human, and the other (WHITE) is an AI
+
+public class OnePlayerController implements Controller
 {
-  private Board b;
-  private Listener l;
-  boolean active;
+  private Board b;        // state of the game (model for this controller)
+  private Listener l;     // listener for the game
+  boolean active;         // is the game still active
+  ReversiAI r;            // AI to control the non-human player
   
   public static void main(String args[])
   {
     ReversiGUI gui = new ReversiGUI();
-    TwoPlayerController c = new TwoPlayerController(gui);
+    OnePlayerController c = new OnePlayerController(gui);
     gui.setController(c);
     c.update();
   }
   
-  public TwoPlayerController(Listener l)
+  public OnePlayerController(Listener l)
   {
     active = true;
     this.l = l;
     b = new Board(BoardGUI.ROWS);
+    r = new GreedyAI();
     update();
   }
   
@@ -50,7 +60,7 @@ public class TwoPlayerController implements Controller
     else if(winner == Board.WHITE) return "White wins";
     else return "Black and White tie";
   }
-  
+
   private void gameOver()
   {
     update();
@@ -69,26 +79,39 @@ public class TwoPlayerController implements Controller
       l.setMessage("Not a legal move");
       return;
     }
-  
-    b.turn();
+    b.turn(); // AI's move
     
-    if(b.canMove()) /* next player has a possible move */
+    Board c;
+    while((c = r.nextMove(b, x, y)) != null)
     {
+      System.out.println("AI");
+      //try {
+      //  Thread.currentThread().sleep(500);
+      //} catch(InterruptedException e) { }
+      b = c; // have a valid AI move
+      b.turn(); // human's turn
       update();
-      return;
+      if(!b.canMove()) // if human can't move
+      {
+        l.setMessage("No possible moves for " + sideToString(b));
+        // fixme pause
+        b.turn();
+      }
+      else { System.out.println("human"); return; }
+      
     }
     
-    /* next player can't move */
-    l.setMessage("No possible moves for " + sideToString(b));
-    b.turn();
-    
-    if(b.canMove()) /* but original player has a possible move */
+    // if we get here,  AI can't move
+    b.turn(); // human's turn
+    if(b.canMove())
     {
       update();
+      System.out.println("human");
       return;
     }
     
     /* no more moves possible, game over */
+    update();
     gameOver();
     return;
   }
@@ -97,6 +120,7 @@ public class TwoPlayerController implements Controller
   {
     active = true;
     b = new Board(BoardGUI.ROWS);
+    r = new GreedyAI();
     update();
     l.setMessage("New game");
   }

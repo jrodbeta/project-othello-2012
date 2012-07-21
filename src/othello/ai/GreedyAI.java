@@ -1,3 +1,6 @@
+package othello.ai;
+import othello.model.Board;
+
 // very simple AI - return the board reflecting the move that captures the most pieces
 
 public class GreedyAI implements ReversiAI

@@ -1,10 +1,15 @@
+package othello.view;
 // GUI for the game - View in the MVC model
 
+
 import javax.swing.*;
-import javax.swing.border.*;
+
+import othello.controller.Controller;
+import othello.model.Board;
+import othello.model.Listener;
+
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
 
 public class ReversiGUI extends JFrame implements Listener
 {
@@ -91,59 +96,4 @@ public class ReversiGUI extends JFrame implements Listener
 }
 
 // the actual board (canvas)
-class BoardGUI extends JPanel
-{
-  public static final int ROWS = 8;
-  public static final int SIZE = 400;
-  public static final int CELLSIZE = SIZE / ROWS;
-  public static final double OFFSET = 0.1;
 
-  // the model that will be drawn next
-  private Board model;
-  
-  public BoardGUI()
-  {
-    setBackground(Color.GRAY);
-    setLayout(null);
-  }
-  
-  // external interface to redraw the board
-  public void setModel(Board b) { model = b; repaint(); }
-  
-  public Dimension getPreferredSize() { return new Dimension(SIZE+1, SIZE+1); }
-  
-  // redraw the board
-  public void paintComponent(Graphics g)
-  {
-    g.setColor(Color.BLACK);
-    super.paintComponent(g);
-    
-    for(int i = 0; i <= ROWS; i++) // divide the board into squares
-    {
-      g.drawLine(i * CELLSIZE, 0, i * CELLSIZE, SIZE);
-      g.drawLine(0, i * CELLSIZE, SIZE, i * CELLSIZE);
-    }
-    
-    g.fillOval(2*CELLSIZE - 2, 2*CELLSIZE - 2, 5, 5); // mark the inner quadrant
-    g.fillOval(SIZE-2*CELLSIZE - 2, 2*CELLSIZE - 2, 5, 5);
-    g.fillOval(2*CELLSIZE - 2, SIZE-2*CELLSIZE - 2, 5, 5);
-    g.fillOval(SIZE-2*CELLSIZE - 2, SIZE-2*CELLSIZE - 2, 5, 5);
-    
-    // draw all pieces currently on the board
-    for(int i = 0; i < ROWS; i++)
-    {
-      for(int j = 0; j < ROWS; j++)
-      {
-        int state = model.getState(i, j);
-        if(state != Board.EMPTY)
-        {
-          if(state == Board.BLACK) g.setColor(Color.BLACK);
-          else g.setColor(Color.WHITE);
-          g.fillOval((int)(i * CELLSIZE + OFFSET * CELLSIZE), (int)(j * CELLSIZE + OFFSET * CELLSIZE),
-                     (int)(CELLSIZE - 2 * OFFSET * CELLSIZE), (int)(CELLSIZE - 2 * OFFSET * CELLSIZE));
-        }
-      }
-    }
-  }  
-  
-}

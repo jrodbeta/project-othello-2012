@@ -1,3 +1,4 @@
+package othello.model;
 /* Basic Reversi Board abstraction
 
 important methods are:
@@ -12,7 +13,6 @@ important methods are:
 
 */
 
-import java.util.*;
 import java.io.*;
 
 public class Board
