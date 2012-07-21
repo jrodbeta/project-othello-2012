@@ -14,8 +14,8 @@ You can build using make or using script:
 ./build.sh
 
 To run (2 player): 
-java -classpath bin othello.controller.TwoPlayerController
+	java -classpath bin othello.controller.TwoPlayerController
        
-       (1 player): 
-java -classpath bin othello.controller.OnePlayerController
+(1 player): 
+	java -classpath bin othello.controller.OnePlayerController
 
