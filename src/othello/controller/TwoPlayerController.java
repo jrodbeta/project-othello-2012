@@ -66,7 +66,7 @@ public class TwoPlayerController implements Controller
 
   public void move(int x, int y)
   {
-    if(!active) return;
+    if(!active) return; /* game is no longer active - no need to check moves */
     
     if(!b.move(x, y)) /* invalid move */
     {
@@ -74,9 +74,9 @@ public class TwoPlayerController implements Controller
       return;
     }
   
-    b.turn();
+    b.turn(); /* switch to next player's turn */
     
-    if(b.canMove()) /* next player has a possible move */
+    if(b.canMove()) /* if  player can move, let them */
     {
       update();
       return;
