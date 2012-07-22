@@ -1,11 +1,18 @@
 package othello.ai;
+import java.awt.Point;
+
 import othello.model.Board;
 
 public class GreedyHeuristicAI implements ReversiAI
 {
+	private Point bestMove;
+
 	  private int size;
-	  private int[][] weights = {{50, -1, 5, 2}, {-1, -10, 1, 1},
-	                            {5, 1, 1, 1}, {2, 1, 1, 0}};
+	  private int[][] weights = {
+			  					{50,  -1, 5, 2}, 
+			  					{-1, -10, 1, 1},
+	                            {5,    1, 1, 1}, 
+	                            {2,    1, 1, 0}};
 
 	  public void setSize(int size) { this.size = size; }
 
@@ -56,7 +63,14 @@ public class GreedyHeuristicAI implements ReversiAI
 			  }
 		  }
 
+
 		  return best;
 	  }
+	  
+	  @Override
+	  public Point getMove() {
+		  return bestMove;
+	  }
 }
+
 

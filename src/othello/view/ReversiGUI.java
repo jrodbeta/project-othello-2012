@@ -24,6 +24,16 @@ public class ReversiGUI extends JFrame implements Listener
   
   private Controller c;
 
+private MouseListener boardListener;
+
+  public ReversiGUI(boolean inputDisabled) {
+	  this();
+	  
+	  if(inputDisabled) {
+		  gameBoard.removeMouseListener(boardListener);
+	  }
+  }
+  
   public ReversiGUI() // build the GUI - status info, a board, and two buttons
   {
     super("Reversi");
@@ -57,7 +67,8 @@ public class ReversiGUI extends JFrame implements Listener
     buttonPanel.add(newGame);
     buttonPanel.add(quitGame);
     
-    gameBoard.addMouseListener(new BoardActionListener());
+    this.boardListener = new BoardActionListener();
+    gameBoard.addMouseListener(this.boardListener);
     
     content.add(gameBoard, BorderLayout.CENTER);
     content.add(infoPanel, BorderLayout.PAGE_START);
