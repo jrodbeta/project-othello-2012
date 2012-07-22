@@ -3,7 +3,7 @@ package othello.controller;
 
 public interface Controller
 {
-  public void update();
-  public void move(int x, int y);
-  public void newGame();
+  public void update();						// update the display
+  public void move(int x, int y);	// attempt to place a piece at coordinate x,y
+  public void newGame();					// start a new game
 }
