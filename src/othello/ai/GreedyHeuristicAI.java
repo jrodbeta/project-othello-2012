@@ -1,4 +1,6 @@
 package othello.ai;
+import java.awt.Point;
+
 import othello.model.Board;
 
 public class GreedyHeuristicAI implements ReversiAI
@@ -52,5 +54,12 @@ public class GreedyHeuristicAI implements ReversiAI
 	    }
 	    return best;
 	  }
+	  
+	  @Override
+	public Point getMove() {
+		// TODO Auto-generated method stub
+		return null;
 	}
+	}
+
 

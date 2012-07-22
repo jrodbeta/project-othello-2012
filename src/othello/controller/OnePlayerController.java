@@ -1,4 +1,5 @@
 package othello.controller;
+import othello.ai.AIThread;
 import othello.ai.GreedyAI;
 import othello.ai.ReversiAI;
 import othello.model.Board;
@@ -14,12 +15,16 @@ public class OnePlayerController implements Controller
 	private Listener l;     // listener for the game
 	boolean active;         // is the game still active
 	ReversiAI r;            // AI to control the non-human player
+	
+	AIThread aiThread;
 
 	public static void main(String args[])
 	{
 		ReversiGUI gui = new ReversiGUI();
 		OnePlayerController c = new OnePlayerController(gui);
 		gui.setController(c);
+		
+		
 		c.update();
 	}
 
@@ -27,6 +32,13 @@ public class OnePlayerController implements Controller
 	{
 		this.l = l;
 		newGame();
+		
+		r = new GreedyAI();
+		r.setSize(b.getSize());
+		
+		aiThread = new AIThread(r, this, Board.WHITE);
+		aiThread.start();
+		
 	}
 
 	private static String sideToString(Board b)
@@ -42,6 +54,12 @@ public class OnePlayerController implements Controller
 		l.setTurn(sideToString(b) + " to move");
 		l.setScore(b.getScore() + " - " + b.getOpponentScore());
 		l.repaint();
+		
+		if(aiThread != null) {
+			synchronized(aiThread) {
+				aiThread.notifyAll();
+			}
+		}
 	}
 
 	private static String scoreToString(Board b)
@@ -76,50 +94,44 @@ public class OnePlayerController implements Controller
 			l.setMessage("Not a legal move");
 			return;
 		}
-		b.turn(); // AI's move
-
-		Board c;
-		while((c = r.nextMove(b, x, y)) != null)
-		{
-			System.out.println("AI");
-			//try {
-			//  Thread.currentThread().sleep(500);
-			//} catch(InterruptedException e) { }
-			b = c; // have a valid AI move
-			b.turn(); // human's turn
-			update();
-			if(!b.canMove()) // if human can't move
-			{
-				l.setMessage("No possible moves for " + sideToString(b));
-				// fixme pause
-				b.turn();
-			}
-			else { System.out.println("human"); return; }
-
-		}
+		b.turn(); // Next players turn
 
 		// if we get here,  AI can't move
-		b.turn(); // human's turn
 		if(b.canMove())
 		{
 			update();
-			System.out.println("human");
+			playerLog("Next player's turn.");
 			return;
+		} else {
+			playerLog("Can't move so yielding.");
+			b.turn();
+			if(b.canMove()) {
+				update();
+				return;
+			}
 		}
 
+		System.out.println("No more possible moves so ending.");
 		/* no more moves possible, game over */
 		update();
 		gameOver();
 		return;
+	}
+	
+	public Board getBoard() {
+		return b;
 	}
 
 	public void newGame()
 	{
 		active = true;
 		b = new Board(BoardGUI.ROWS);
-		r = new GreedyAI();
-		r.setSize(b.getSize());
+		
 		update();
 		l.setMessage("New game");
+	}
+	
+	public void playerLog(String msg) {
+		System.out.println(b.getActiveName() + "-" + msg);
 	}
 }

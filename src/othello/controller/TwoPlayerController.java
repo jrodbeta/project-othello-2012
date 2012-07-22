@@ -104,4 +104,9 @@ public class TwoPlayerController implements Controller
     update();
     l.setMessage("New game");
   }
+
+	@Override
+	public Board getBoard() {
+		return b;
+	}
 }
