@@ -5,6 +5,6 @@ import othello.model.Board;
 // move of the human player, return a board with the next move of the AI
 public interface ReversiAI
 {
-  public void setSize(int size);
-  public Board nextMove(Board prev, int lastx, int lasty);
+  public void setSize(int size); // set the size of the board (necessary before using the AI)
+  public Board nextMove(Board prev, int lastx, int lasty); // return board with the next move (passing in coordinates of the previous move
 }
