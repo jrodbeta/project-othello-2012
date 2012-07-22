@@ -1,4 +1,5 @@
 package othello.ai;
+import java.awt.Point;
 import othello.model.Board;
 
 // very simple AI - return the board reflecting the move that captures the most pieces
@@ -103,5 +104,7 @@ public class SimpleMinimaxPrunedAI implements ReversiAI
   	best.turn();
 		return best;
   }
+  
+  public Point getMove() { return null; }
   
 }
