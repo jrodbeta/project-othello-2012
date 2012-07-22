@@ -13,6 +13,7 @@ important methods are:
 
 */
 
+import java.awt.Point;
 import java.io.*;
 
 public class Board
@@ -31,6 +32,8 @@ public class Board
   private short moves = 0;  // number of moves made so far (not used yet)
   
   private boolean active = true; // true if it's black's turn, false if it's white's turn
+  
+  private Point lastMove[] = new Point[2];
   
   // build a new board, with dimensions size x size
   public Board(int boardsize)
@@ -107,6 +110,11 @@ public class Board
     else return WHITE;
   }
   
+  public String getActiveName() {
+	  if(active) return "Black";
+	  else return "White";
+  }
+  
   public int getScore() { if(active) return bcount; else return wcount; }
   public int getOpponentScore() { if(active) return wcount; else return bcount; }
   
@@ -146,7 +154,19 @@ public class Board
     
     // place piece at current position
     setSquare(x, y, active);
+    
+    // set last player move.
+    lastMove[getActive()] = new Point(x,y);
+    
     return true;
+  }
+  
+  public Point getLastPlayerMove() {
+	  if(getActive() == WHITE) {
+		  return lastMove[BLACK];
+	  } else {
+		  return lastMove[WHITE];
+	  }
   }
 
   // end current player's turn
