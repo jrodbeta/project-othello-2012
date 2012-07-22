@@ -1,5 +1,6 @@
 package othello.controller;
 import othello.ai.GreedyAI;
+import othello.ai.GreedyHeuristicAI;
 import othello.ai.ReversiAI;
 import othello.model.Board;
 import othello.model.Listener;
@@ -117,7 +118,7 @@ public class OnePlayerController implements Controller
 	{
 		active = true;
 		b = new Board(BoardGUI.ROWS);
-		r = new GreedyAI();
+		r = new GreedyHeuristicAI();
 		r.setSize(b.getSize());
 		update();
 		l.setMessage("New game");
