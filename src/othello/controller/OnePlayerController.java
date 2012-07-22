@@ -56,8 +56,8 @@ public class OnePlayerController implements Controller
 		l.repaint();
 		
 		if(aiThread != null) {
-			synchronized(aiThread) {
-				aiThread.notifyAll();
+			synchronized (AIThread.syncObject) {
+				AIThread.syncObject.notifyAll();
 			}
 		}
 	}

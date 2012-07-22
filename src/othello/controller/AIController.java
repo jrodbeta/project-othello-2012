@@ -2,6 +2,8 @@ package othello.controller;
 
 import othello.ai.AIThread;
 import othello.ai.GreedyAI;
+import othello.ai.GreedyHeuristicAI;
+import othello.ai.PluggableHeuristicAI;
 import othello.ai.ReversiAI;
 import othello.model.Board;
 import othello.model.Listener;
@@ -14,7 +16,6 @@ public class AIController implements Controller {
 	private Board b; // state of the game (model for this controller)
 	private Listener l; // listener for the game
 	boolean active; // is the game still active
-	ReversiAI r; // AI to control the non-human player
 
 	AIThread aiThreads[] = new AIThread[2];
 
@@ -30,14 +31,25 @@ public class AIController implements Controller {
 		this.l = l;
 		newGame();
 
-		r = new GreedyAI();
-		r.setSize(b.getSize());
+		ReversiAI aiWhite = new PluggableHeuristicAI();
+		aiWhite.setSize(b.getSize());
+		
+		ReversiAI aiBlack = new PluggableHeuristicAI();
+		aiBlack.setSize(b.getSize());
 
-		aiThreads[0] = new AIThread(r, this, Board.WHITE);
+		aiThreads[0] = new AIThread(aiWhite, this, Board.WHITE);
 		aiThreads[0].start();
 
-		aiThreads[1] = new AIThread(r, this, Board.BLACK);
-		aiThreads[1].start();
+		aiThreads[1] = new AIThread(aiBlack, this, Board.BLACK);
+		synchronized(aiThreads[1]) {
+			// Black goes first so wait for thread to initialize.
+			aiThreads[1].start();			
+			try {
+				aiThreads[1].wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 
 	}
 

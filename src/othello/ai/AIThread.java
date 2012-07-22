@@ -29,14 +29,25 @@ public class AIThread extends Thread {
 
 	@Override
 	public void run() {
+		synchronized(this) {
+			this.notifyAll();
+		}
+		
 		while (true) {
 
 			// Wait on it's self
 			// until notified by an outside source.
 			synchronized (syncObject) {
 				try {
-					log("Waiting...");
-					syncObject.wait();
+					if(controller.getBoard().gameOver()) {
+						log("Game over waiting for new game.");
+						syncObject.wait();
+					}
+					
+					if(controller.getBoard().getActive() != color) {
+						log("Waiting for other player.");
+						syncObject.wait();						
+					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -44,7 +55,8 @@ public class AIThread extends Thread {
 
 			// Check to make sure it's our turn.
 			log("Woke up checking turn...");
-			if (controller.getBoard().getActive() == color) {
+			if (!controller.getBoard().gameOver() && 
+					controller.getBoard().getActive() == color) {
 				long start = System.currentTimeMillis();
 				
 				log("My turn making a move yo.");

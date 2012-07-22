@@ -5,9 +5,13 @@ import othello.model.Board;
 
 public class GreedyHeuristicAI implements ReversiAI
 	{
+	private Point bestMove;
 	  private int size;
-	  private int[][] weights = {{50, -1, 5, 2}, {-1, -10, 1, 1},
-	                            {5, 1, 1, 1}, {2, 1, 1, 0}};
+	  private int[][] weights = {
+			  					{50,  -1, 5, 2}, 
+			  					{-1, -10, 1, 1},
+	                            {5,    1, 1, 1}, 
+	                            {2,    1, 1, 0}};
 
 	  public void setSize(int size) { this.size = size; }
 
@@ -47,6 +51,7 @@ public class GreedyHeuristicAI implements ReversiAI
 	          {
 	            score = newscore;
 	            best = b;
+	            bestMove = new Point(i,j);
 	          }
 	          b = new Board(prev);
 	        }
@@ -57,8 +62,7 @@ public class GreedyHeuristicAI implements ReversiAI
 	  
 	  @Override
 	public Point getMove() {
-		// TODO Auto-generated method stub
-		return null;
+		return bestMove;
 	}
 	}
 
