@@ -13,7 +13,7 @@ public class AIController extends Controller {
 	private AIThread aiThreads[] = new AIThread[2]; // each thread runs one AI
 
 	public static void main(String args[]) {
-		ReversiGUI gui = new ReversiGUI(true);
+		ReversiGUI gui = new ReversiGUI(false);
 		AIController c = new AIController(gui);
 		gui.setController(c);
 
@@ -43,7 +43,6 @@ public class AIController extends Controller {
 				e.printStackTrace();
 			}
 		}
-
 	}
 	
 	public void update() {

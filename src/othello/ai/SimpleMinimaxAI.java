@@ -9,6 +9,7 @@ public class SimpleMinimaxAI implements ReversiAI
 {
   private int size;
   private int maxDepth;
+  private Point bestMove;
   
   public SimpleMinimaxAI(int depth) { maxDepth = depth; }
   public void setSize(int boardsize) { size = boardsize; }
@@ -84,6 +85,7 @@ public class SimpleMinimaxAI implements ReversiAI
   {
   	int maxScore = MAX_SCORE;
   	Board best = null, b = new Board(prev);
+  	bestMove = null;
   	
   	for(int j = 0; j < size; j++)
   	{
@@ -95,6 +97,7 @@ public class SimpleMinimaxAI implements ReversiAI
   				
   				if(score > maxScore)
   				{
+  					bestMove = new Point(i,j);
   					maxScore = score;
   					best = b;
   				}
@@ -106,7 +109,5 @@ public class SimpleMinimaxAI implements ReversiAI
   	return best;
   }
   
-	public Point getMove() {
-		return null;
-	}
+	public Point getMove() { return bestMove; }
 }

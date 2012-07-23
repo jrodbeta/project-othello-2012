@@ -15,26 +15,16 @@ public class ReversiGUI extends JFrame implements Listener
 {
 	private static final long serialVersionUID = 1L; // needed for Eclipse
 	
-	private JLabel gameMessage = new JLabel(" ");
-  private JLabel gameTurn = new JLabel(" ");
-  private JLabel gameScore = new JLabel(" ");
-  private JButton newGame = new JButton("New Game");
-  private JButton quitGame = new JButton("Quit");
-  private BoardGUI gameBoard = new BoardGUI();
+	private JLabel gameMessage = new JLabel(" ");		// display game messages
+  private JLabel gameTurn = new JLabel(" ");			// display turn information
+  private JLabel gameScore = new JLabel(" ");			// display current score
+  private JButton newGame = new JButton("New Game");	// start a new game
+  private JButton quitGame = new JButton("Quit");			// quit
+  private BoardGUI gameBoard = new BoardGUI();				// board
   
-  private Controller c;
-
-private MouseListener boardListener;
-
-  public ReversiGUI(boolean inputDisabled) {
-	  this();
-	  
-	  if(inputDisabled) {
-		  gameBoard.removeMouseListener(boardListener);
-	  }
-  }
+  private Controller c;														// mediate between model and view
   
-  public ReversiGUI() // build the GUI - status info, a board, and two buttons
+  public ReversiGUI(boolean inputEnabled) // build the GUI - status info, a board, and two buttons
   {
     super("Reversi");
     JComponent content = (JComponent) getContentPane();
@@ -67,8 +57,7 @@ private MouseListener boardListener;
     buttonPanel.add(newGame);
     buttonPanel.add(quitGame);
     
-    this.boardListener = new BoardActionListener();
-    gameBoard.addMouseListener(this.boardListener);
+    if(inputEnabled) gameBoard.addMouseListener(new BoardActionListener());
     
     content.add(gameBoard, BorderLayout.CENTER);
     content.add(infoPanel, BorderLayout.PAGE_START);
@@ -98,7 +87,7 @@ private MouseListener boardListener;
     {
       int x = e.getX();
       int y = e.getY();
-      if(x <BoardGUI.SIZE && y < BoardGUI.SIZE)
+      if(x < BoardGUI.SIZE && y < BoardGUI.SIZE)
       {
         int row = x / BoardGUI.CELLSIZE;
         int col = y / BoardGUI.CELLSIZE;

@@ -11,7 +11,7 @@ public class TwoPlayerController extends Controller
 	
   public static void main(String args[])
   {
-    ReversiGUI gui = new ReversiGUI();
+    ReversiGUI gui = new ReversiGUI(true);
     TwoPlayerController c = new TwoPlayerController(gui);
     gui.setController(c);
     c.update();
