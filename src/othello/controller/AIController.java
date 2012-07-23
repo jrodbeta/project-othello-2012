@@ -27,7 +27,7 @@ public class AIController extends Controller {
 		ReversiAI aiWhite = new PluggableHeuristicAI();
 		aiWhite.setSize(b.getSize());
 		
-		ReversiAI aiBlack = new PluggableHeuristicAI();
+		ReversiAI aiBlack = new SimpleMinimaxAI(7);
 		aiBlack.setSize(b.getSize());
 
 		aiThreads[0] = new AIThread(aiWhite, this, Board.WHITE);

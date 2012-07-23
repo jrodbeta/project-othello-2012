@@ -10,12 +10,14 @@ public class SimpleMinimaxAI implements ReversiAI
   private int size;
   private int maxDepth;
   private Point bestMove;
+  private int moves;
   
   public SimpleMinimaxAI(int depth) { maxDepth = depth; }
   public void setSize(int boardsize) { size = boardsize; }
   
   private int minMove(Board prev, int depth)
   {
+  	moves++;
   	if(depth > maxDepth) return prev.getScore(); // exceeded maximum depth
   	
   	int minScore = MAX_SCORE;
@@ -30,6 +32,7 @@ public class SimpleMinimaxAI implements ReversiAI
   			{
   				b.turn(); // max player's turn
   				int score = maxMove(b, depth + 1);
+  				//printMsg(false, depth, score, i, j); // fixme
   				
   				if(score < minScore) minScore = score;
   				
@@ -51,6 +54,7 @@ public class SimpleMinimaxAI implements ReversiAI
   
   private int maxMove(Board prev, int depth)
   {
+  	moves++;
   	if(depth > maxDepth) return prev.getScore(); // exceeded maximum depth
   	
   	int maxScore = MIN_SCORE;
@@ -63,6 +67,7 @@ public class SimpleMinimaxAI implements ReversiAI
   			if(b.move(i, j)) // try move
   			{
   				int score = minMove(b, depth + 1);
+  				//printMsg(true, depth, score, i, j); // fixme
   				
   				if(score > maxScore)	maxScore = score;
   				
@@ -83,6 +88,8 @@ public class SimpleMinimaxAI implements ReversiAI
 
   public Board nextMove(Board prev, int lastx, int lasty)
   {
+  	moves = 0; // fixme
+  	long start = System.currentTimeMillis();
   	int maxScore = MIN_SCORE;
   	Board best = null, b = new Board(prev);
   	bestMove = null;
@@ -94,6 +101,7 @@ public class SimpleMinimaxAI implements ReversiAI
   			if(b.move(i, j))
   			{
   				int score = minMove(b, 1);
+  				//printMsg(true, 0, score, i, j); // fixme
   				
   				if(score > maxScore)
   				{
@@ -105,8 +113,18 @@ public class SimpleMinimaxAI implements ReversiAI
   			}
   		}
   	}
-  	
+  	System.out.println("elapsed: " + ((float)(System.currentTimeMillis()-start)/1000));
+  	System.out.println("moves: " + moves);
   	return best;
+  }
+  
+  private int printMsg(boolean max, int depth, int score, int x, int y)
+  {
+  	for(int i = 0; i < depth; i++) System.out.print("  ");
+  	if(max) System.out.print("max ");
+  	else System.out.print("min ");
+  	System.out.println("(" + x + "," + y + "): " + score);
+  	return score;
   }
   
 	public Point getMove() { return bestMove; }

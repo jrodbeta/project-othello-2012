@@ -25,20 +25,21 @@ public class Board
   private long black_board = 0; // bitboard - 1 means a black piece occupies the position
   private long white_board = 0; // bitboard - 1 means a white piece occupies the position
 
-  private short bcount = 0; // number of black pieces on the board
-  private short wcount = 0; // number of white pieces on the board
+  private int bcount = 0; // number of black pieces on the board
+  private int wcount = 0; // number of white pieces on the board
   
-  private short size;       // dimensions of the board
-  private short moves = 0;  // number of moves made so far (not used yet)
+  private int size;       // dimensions of the board
+  private int moves = 0;  // number of moves made so far (not used yet)
   
   private boolean active = true; // true if it's black's turn, false if it's white's turn
   
-  private Point lastMove[] = new Point[2];
+  private int blast = -1;	// coordinates of last black move
+  private int wlast = -1; // coordinates of last white move
   
   // build a new board, with dimensions size x size
   public Board(int boardsize)
   {
-    size = (short)boardsize;
+  	size = boardsize;
     int mid = boardsize / 2 - 1;
     setSquare(mid, mid, false); // set the middle 4 positions
     setSquare(mid + 1, mid + 1, false);
@@ -156,17 +157,21 @@ public class Board
     setSquare(x, y, active);
     
     // set last player move.
-    lastMove[getActive()] = new Point(x,y);
+    if(active) blast = x + y * size;
+    else wlast = x + y * size;
+    //lastMove[getActive()] = new Point(x,y);
     
     return true;
   }
   
   public Point getLastPlayerMove() {
-	  if(getActive() == WHITE) {
-		  return lastMove[BLACK];
-	  } else {
-		  return lastMove[WHITE];
-	  }
+  	if(active) return new Point(blast % size, blast / size);
+  	else return new Point(wlast % size, blast / size);
+	  //if(getActive() == WHITE) {
+		//  return lastMove[BLACK];
+	  //} else {
+		//  return lastMove[WHITE];
+	  //}
   }
 
   // end current player's turn

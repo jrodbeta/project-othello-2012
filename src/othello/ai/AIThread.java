@@ -88,12 +88,10 @@ public class AIThread extends Thread {
 				// It's not this AI's turn so continue on.
 				continue;
 			}
-
 		}
 	}
 
 	private void log(String msg) {
 		System.out.println(getName() + "-" + msg);
 	}
-
 }
