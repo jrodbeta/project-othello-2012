@@ -17,8 +17,7 @@ public class BoardGUI extends JPanel
   public static final int CELLSIZE = SIZE / ROWS;
   public static final double OFFSET = 0.1;
 
-  // the model that will be drawn next
-  private Board model;
+  private Board model; // the board that will be drawn next
   
   public BoardGUI()
   {
@@ -27,7 +26,7 @@ public class BoardGUI extends JPanel
   }
   
   // external interface to redraw the board
-  public void setModel(Board b) { model = b; revalidate(); repaint(); }
+  public void setModel(Board b) { model = b; repaint(); }
   
   public Dimension getPreferredSize() { return new Dimension(SIZE+1, SIZE+1); }
   

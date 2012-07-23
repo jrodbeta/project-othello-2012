@@ -24,7 +24,6 @@ public class AIThread extends Thread {
 		this.controller = controller;
 		this.color = color;
 		this.ai = ai;
-
 	}
 
 	@Override

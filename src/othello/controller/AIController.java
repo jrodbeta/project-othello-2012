@@ -6,11 +6,11 @@ import othello.model.Listener;
 import othello.view.BoardGUI;
 import othello.view.ReversiGUI;
 
-// a controller, where one player (BLACK) is a human, and the other (WHITE) is an AI
+// a controller, where both players are AI threads
 
 public class AIController extends Controller {
 
-	private AIThread aiThreads[] = new AIThread[2];
+	private AIThread aiThreads[] = new AIThread[2]; // each thread runs one AI
 
 	public static void main(String args[]) {
 		ReversiGUI gui = new ReversiGUI(true);
