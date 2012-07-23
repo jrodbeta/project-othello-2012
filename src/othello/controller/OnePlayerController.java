@@ -30,7 +30,20 @@ public class OnePlayerController extends Controller
 		aiThread = new AIThread(r, this, Board.WHITE);
 		aiThread.start();
 	}
+	
+	public Board getBoard() { return b; }
 
+	public void newGame()
+	{
+		active = true;
+		b = new Board(BoardGUI.ROWS);
+		r = new GreedyHeuristicAI();
+		r.setSize(b.getSize());
+		update();
+		l.setMessage("New game");
+	}
+
+	// update 
 	public void update()
 	{
 		super.update();
@@ -46,47 +59,35 @@ public class OnePlayerController extends Controller
 	{
 		if(!active) return;
 
-		if(!b.move(x, y)) /* invalid move */
+		if(!b.move(x, y)) // invalid move by human
 		{
 			l.setMessage("Not a legal move");
 			return;
 		}
-		b.turn(); // Next players turn
+		b.turn(); // AI's turn
 
-		// if we get here,  AI can't move
-		if(b.canMove())
+		if(b.canMove()) // AI can move
 		{
 			update();
 			playerLog("Next player's turn.");
 			return;
-		} else {
-			playerLog("Can't move so yielding.");
-			b.turn();
-			if(b.canMove()) {
-				update();
-				return;
-			}
+		}
+		
+		// AI can't move, so human's turn
+		playerLog("Can't move so yielding.");
+		b.turn();
+		
+		if(b.canMove()) // human can move
+		{
+			update();
+			return;
 		}
 
+		// no more moves possible, game over
 		System.out.println("No more possible moves so ending.");
-		/* no more moves possible, game over */
 		update();
 		gameOver();
 		return;
-	}
-	
-	public Board getBoard() {
-		return b;
-	}
-
-	public void newGame()
-	{
-		active = true;
-		b = new Board(BoardGUI.ROWS);
-		r = new GreedyHeuristicAI();
-		r.setSize(b.getSize());
-		update();
-		l.setMessage("New game");
 	}
 	
 	public void playerLog(String msg) {

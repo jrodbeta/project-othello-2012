@@ -60,37 +60,38 @@ public class AIController extends Controller {
 		if (!active)
 			return;
 
-		if (!b.move(x, y)) /* invalid move */
+		if (!b.move(x, y)) // invalid move
 		{
 			l.setMessage("Not a legal move");
 			return;
 		}
-		b.turn(); // Next players turn
+		b.turn(); // Next player's turn
 
-		// if we get here, AI can't move
-		if (b.canMove()) {
+		if (b.canMove()) // player can move
+		{
 			update();
 			playerLog("Next player's turn.");
 			return;
-		} else {
-			playerLog("Can't move so yielding.");
-			b.turn();
-			if (b.canMove()) {
-				update();
-				return;
-			}
 		}
 
+		// player can't move, so switch to other player
+		playerLog("Can't move so yielding.");
+		b.turn();
+		
+		if (b.canMove()) // other player can move
+		{
+			update();
+			return;
+		}
+
+		// no more moves possible, game over
 		System.out.println("No more possible moves so ending.");
-		/* no more moves possible, game over */
 		update();
 		gameOver();
 		return;
 	}
 
-	public Board getBoard() {
-		return b;
-	}
+	public Board getBoard() { return b;	}
 
 	public void newGame() {
 		active = true;
