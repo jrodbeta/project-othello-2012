@@ -1,24 +1,28 @@
 package othello.ai;
 import java.awt.Point;
+
 import othello.model.Board;
 
 // very simple AI - return the board reflecting the move that captures the most pieces
 
 public class SimpleMinimaxPrunedAI implements ReversiAI
 {
-	public static final int MAX_DEPTH = 5;
-	
   private int size;
+  private int maxDepth;
+  private Point bestMove;
+  private int moves;
   
-  public void setSize(int size) { this.size = size; }
+  public SimpleMinimaxPrunedAI(int depth) { maxDepth = depth; }
+  public void setSize(int boardsize) { size = boardsize; }
   
-  private int minMove(Board prev, int alpha, int beta, int depth)
+  private int minMove(Board prev, int depth, int alpha, int beta)
   {
-  	// assumption:  it is min player's turn
-  	if(!prev.canMove() || depth > MAX_DEPTH) return -prev.getScore();
+  	moves++;
+  	if(depth > maxDepth) return prev.getScore(); // exceeded maximum depth
   	
   	int minScore = MAX_SCORE;
   	Board b = new Board(prev);
+  	b.turn(); // min player's turn
   	
   	for(int j = 0; j < size; j++)
   	{
@@ -27,26 +31,33 @@ public class SimpleMinimaxPrunedAI implements ReversiAI
   			if(b.move(i, j))
   			{
   				b.turn(); // max player's turn
-  				int score = maxMove(b, alpha, beta, depth + 1);
+  				int score = maxMove(b, depth + 1, alpha, beta);
+  				//printMsg(false, depth, score, i, j); // fixme
   				
-  				if(score < minScore)
-  				{
-  					if(score <= alpha) return score; // prune - branch won't be used
-  					if(score < beta) beta = score;
-  					minScore = score;
-  				}
+  				if(score < minScore) minScore = score;
+  				if(minScore <= alpha) return minScore;
+  				if(minScore < beta) beta = minScore;
   				
   				b = new Board(prev);
+  				b.turn();
   			}
   		}
   	}
+  	
+  	if(minScore == MAX_SCORE) // min player can't make a move
+  	{
+  		b.turn();
+  		if(b.canMove()) return maxMove(b, depth + 1, alpha, beta); // max player can make a move
+  		else return prev.getScore(); // max player can't make a move either - game over
+  	}
+  	
 		return minScore;
   }
   
-  private int maxMove(Board prev, int alpha, int beta, int depth)
+  private int maxMove(Board prev, int depth, int alpha, int beta)
   {
-  	// assumption:  it is max player's turn
-  	if(!prev.canMove() || depth > MAX_DEPTH) return prev.getScore();
+  	moves++;
+  	if(depth > maxDepth) return prev.getScore(); // exceeded maximum depth
   	
   	int maxScore = MIN_SCORE;
   	Board b = new Board(prev);
@@ -57,31 +68,36 @@ public class SimpleMinimaxPrunedAI implements ReversiAI
   		{
   			if(b.move(i, j)) // try move
   			{
-  				b.turn(); // min player's turn
-  				int score = minMove(b, alpha, beta, depth + 1);
+  				int score = minMove(b, depth + 1, alpha, beta);
+  				//printMsg(true, depth, score, i, j); // fixme
   				
-  				if(score > maxScore)
-  				{
-  					if(score >= beta) return score; // prune - branch won't be used
-  					if(score > alpha) alpha = score;
-  					
-  					maxScore = score;
-  				}
+  				if(score > maxScore)	maxScore = score;
+  				if(maxScore >= beta) return maxScore;
+  				if(maxScore > alpha) alpha = maxScore;
   				
   				b = new Board(prev);
   			}
   		}
   	}
+  	
+  	if(maxScore == MIN_SCORE) // no moves found
+  	{
+  		b.turn();
+  		if(b.canMove()) { b.turn(); return minMove(b, depth + 1, alpha, beta); }
+  		else return prev.getScore();
+  	}
+  	
 		return maxScore;
   }
 
   public Board nextMove(Board prev, int lastx, int lasty)
   {
-  	if(!prev.canMove()) return null;
-  	
+  	moves = 0; // fixme
+  	long start = System.currentTimeMillis();
   	int maxScore = MIN_SCORE;
   	int alpha = MIN_SCORE, beta = MAX_SCORE;
   	Board best = null, b = new Board(prev);
+  	bestMove = null;
   	
   	for(int j = 0; j < size; j++)
   	{
@@ -89,10 +105,12 @@ public class SimpleMinimaxPrunedAI implements ReversiAI
   		{
   			if(b.move(i, j))
   			{
-  				b.turn(); // now it's min player's turn
-  				int score = minMove(b, MIN_SCORE, MAX_SCORE, 1);
+  				int score = minMove(b, 1, alpha, beta);
+  				//printMsg(true, 0, score, i, j); // fixme
+  				
   				if(score > maxScore)
   				{
+  					bestMove = new Point(i,j);
   					maxScore = score;
   					best = b;
   				}
@@ -100,10 +118,19 @@ public class SimpleMinimaxPrunedAI implements ReversiAI
   			}
   		}
   	}
-  	best.turn();
-		return best;
+  	System.out.println("elapsed: " + ((float)(System.currentTimeMillis()-start)/1000));
+  	System.out.println("moves: " + moves);
+  	return best;
   }
   
-  public Point getMove() { return null; }
+  private int printMsg(boolean max, int depth, int score, int x, int y)
+  {
+  	for(int i = 0; i < depth; i++) System.out.print("  ");
+  	if(max) System.out.print("max ");
+  	else System.out.print("min ");
+  	System.out.println("(" + x + "," + y + "): " + score);
+  	return score;
+  }
   
+	public Point getMove() { return bestMove; }
 }
