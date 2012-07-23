@@ -22,11 +22,11 @@ public class Board
   public static final int WHITE = 1;
   public static final int EMPTY = 2;
 
-  private long black_board = 0; // bitboard - 1 means a black piece occupies the position
-  private long white_board = 0; // bitboard - 1 means a white piece occupies the position
+  private long active_board = 0; // bitboard - 1 means active player's piece occupies the position
+  private long inactive_board = 0; // bitboard - 1 means a inactive player's piece occupies the position
 
-  private int bcount = 0; // number of black pieces on the board
-  private int wcount = 0; // number of white pieces on the board
+  private int active_count = 0; // number of pieces active player has on the board
+  private int inactive_count = 0; // number of pieces inactive player has on the board
   
   private int size;       // dimensions of the board
   private int moves = 0;  // number of moves made so far (not used yet)
@@ -39,22 +39,25 @@ public class Board
   // build a new board, with dimensions size x size
   public Board(int boardsize)
   {
-  	size = boardsize;
+    size = boardsize;
     int mid = boardsize / 2 - 1;
-    setSquare(mid, mid, false); // set the middle 4 positions
-    setSquare(mid + 1, mid + 1, false);
-    setSquare(mid + 1, mid, true);
-    setSquare(mid, mid + 1, true);
+    
+    setSquare(mid + 1, mid); // set initial board - 4 center squares occupied
+    setSquare(mid, mid + 1);
+    turn();
+    setSquare(mid, mid);
+    setSquare(mid + 1, mid + 1);
+    turn();
   }
   
   // copy constructor
   public Board(Board b)
   {
-    black_board = b.black_board;
-    white_board = b.white_board;
-    
-    bcount = b.bcount;
-    wcount = b.wcount;
+  	active_board = b.active_board;
+  	inactive_board = b.inactive_board;
+  	
+  	active_count = b.active_count;
+  	inactive_count = b.inactive_count;
 
     moves = b.moves;
     size = b.size;
@@ -62,35 +65,19 @@ public class Board
     active  = b.active;
   }
   
-  // place a piece at position x, y for the given player
-  private void setSquare(int x, int y, boolean black)
+  // place a piece at position x, y for the current player
+  private void setSquare(int x, int y)
   {
-    if(black)
-    {
-      black_board |= (1L << (y * size + x));
-      bcount++;
-    }
-    else
-    {
-      white_board |= (1L << (y * size + x));
-      wcount++;
-    }
+    active_board |= (1L << (y * size + x));
+    active_count++;
   }
   
   // flip the piece at position x, y from the inactive player to the active one
   private void flipSquare(int x, int y)
   {
     long val = (1L << (y * size + x));
-    if(active) // black's turn
-    {
-      black_board |= val;
-      white_board &= ~val;
-    }
-    else
-    {
-      white_board |= val;
-      black_board &= ~val;    
-    }
+    active_board |= val;
+    inactive_board &= ~val;
   }
   
   // returns true if the given player occupies the given square
@@ -98,8 +85,8 @@ public class Board
   {
     if(x < 0 || y < 0 || x >= size || y >= size) return false;
   
-    if(black) return (black_board & (1L << (y * size + x))) != 0;
-    else return (white_board & (1L << (y * size + x))) != 0;
+    if(black == active) return (active_board & (1L << (y * size + x))) != 0;
+    else return (inactive_board & (1L << (y * size + x))) != 0;
   }
   
   // getter methods
@@ -108,22 +95,17 @@ public class Board
   public String getActiveName() { return active ? "Black" : "White"; }
   
   // return the total number of squares - for current player or opponent
-  public int getTotal(boolean current)
-  {
-  	if(current) return active ? bcount : wcount;
-  	else return active ? wcount : bcount;
-  }
+  public int getTotal(boolean current) { return current ? active_count : inactive_count; }
   
-  public int getScore()
-  {
-  	return active ? (bcount - wcount) : (wcount - bcount);
-  }
+  public int getScore() { return active_count - inactive_count; }
   
   // get ID of winning player
   public int getWinning()
   {
-    if(bcount > wcount) return BLACK;
-    else if(wcount > bcount) return WHITE;
+  	int acount = active_count, icount = inactive_count;
+  	if(!active) { int tmp = acount; acount = icount; icount = tmp; }
+    if(acount > icount) return BLACK;
+    else if(icount > acount) return WHITE;
     else return EMPTY;
   }
   
@@ -140,7 +122,7 @@ public class Board
   {
     if(getState(x, y) != EMPTY) return false; // current square must be unoccupied
   
-    int before = bcount;
+    int before = active_count;
     
     west(x - 1, y); // checks if can capture in this direction, flipping pieces where necessary
     east(x + 1, y);
@@ -151,15 +133,14 @@ public class Board
     northeast(x + 1, y - 1);
     southwest(x - 1, y + 1);
     
-    if(before == bcount) return false; // if no changes, move was unsuccessful
+    if(before == active_count) return false; // if no changes, move was unsuccessful
     
     // place piece at current position
-    setSquare(x, y, active);
+    setSquare(x, y);
     
     // set last player move.
     if(active) blast = x + y * size;
     else wlast = x + y * size;
-    //lastMove[getActive()] = new Point(x,y);
     
     return true;
   }
@@ -167,15 +148,15 @@ public class Board
   public Point getLastPlayerMove() {
   	if(active) return new Point(blast % size, blast / size);
   	else return new Point(wlast % size, blast / size);
-	  //if(getActive() == WHITE) {
-		//  return lastMove[BLACK];
-	  //} else {
-		//  return lastMove[WHITE];
-	  //}
   }
 
   // end current player's turn
-  public void turn() { active = !active; }
+  public void turn()
+  {
+  	{ long tmp = active_board; active_board = inactive_board; inactive_board = tmp; }
+  	{ int tmp = active_count; active_count = inactive_count; inactive_count = tmp; }
+  	active = !active;
+  }
   
   // can the current player make a move?
   public boolean canMove()
@@ -192,7 +173,7 @@ public class Board
   // check if game is over - can either player make a move?
   public boolean gameOver()
   {
-    if(bcount + wcount == size * size) return true;
+    if(active_count + inactive_count == size * size) return true;
     else if(canMove()) return false;
     else
     {
@@ -204,16 +185,8 @@ public class Board
   // update piece counts for current player capturing 'flipped' pieces
   private void updateCount(int flipped)
   {
-    if(active)
-    {
-      bcount += flipped;
-      wcount -= flipped;
-    }
-    else
-    {
-      wcount += flipped;
-      bcount -= flipped;
-    }
+    active_count += flipped;
+    inactive_count -= flipped;
   }
   
   // methods to check whether pieces can be capture in any of the 8 directions
@@ -371,7 +344,17 @@ public class Board
     System.out.print(" --");
     for(int i = 0; i < size; i++) System.out.print("-");
     System.out.print("\n");
-    System.out.println("b: " + bcount + " w: " + wcount + " e: " + (size * size - (bcount + wcount)));
+    System.out.println(boardStats());
+  }
+  
+  private String boardStats()
+  {
+  	if(active)
+  		return "b: " + active_count + " w: " + inactive_count + " e: " +
+  			((size * size) - (active_count + inactive_count));
+  	else
+  		return "b: " + inactive_count + " w: " + active_count + " e: " +
+			((size * size) - (active_count + inactive_count));
   }
   
   // get coordinates from the user
@@ -432,6 +415,8 @@ public class Board
     
     System.out.println("GAME OVER");
     int winner = getWinning();
+    int bcount = getTotal(true), wcount = getTotal(false);
+    if(!active) { int tmp = bcount; bcount = wcount; wcount = tmp; }
     
     if(winner == BLACK) System.out.println("Black wins " + bcount + " - " + wcount + ".");
     else if(winner == WHITE) System.out.println("White wins " + wcount + " - " + bcount + ".");

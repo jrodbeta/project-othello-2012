@@ -17,7 +17,7 @@ public class SimpleMinimaxPrunedAI implements ReversiAI
   
   private int minMove(Board prev, int depth, int alpha, int beta)
   {
-  	moves++;
+  	moves++; // fixme
   	if(depth > maxDepth) return prev.getScore(); // exceeded maximum depth
   	
   	int minScore = MAX_SCORE;
@@ -56,7 +56,7 @@ public class SimpleMinimaxPrunedAI implements ReversiAI
   
   private int maxMove(Board prev, int depth, int alpha, int beta)
   {
-  	moves++;
+  	moves++; // fixme
   	if(depth > maxDepth) return prev.getScore(); // exceeded maximum depth
   	
   	int maxScore = MIN_SCORE;
