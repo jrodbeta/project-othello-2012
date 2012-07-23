@@ -10,6 +10,10 @@ public abstract class Controller
 	protected Listener l; // listener for the game
 	protected boolean active; // is the game still active
 	
+	public abstract void move(int x, int y);	// attempt to place a piece at coordinate x,y
+	public abstract void newGame();					// start a new game
+	public abstract Board getBoard();
+	
 	// update the display with the current board / player move
   public void update()
   {
@@ -19,10 +23,6 @@ public abstract class Controller
     l.setScore(b.getTotal(true) + " - " + b.getTotal(false));
     l.repaint();
   }
-	
-	public abstract void move(int x, int y);	// attempt to place a piece at coordinate x,y
-	public abstract void newGame();					// start a new game
-	public abstract Board getBoard();
 	
 	// display the winner and disable input
 	protected void gameOver()

@@ -1,8 +1,5 @@
 package othello.controller;
-import othello.ai.AIThread;
-import othello.ai.GreedyAI;
-import othello.ai.GreedyHeuristicAI;
-import othello.ai.ReversiAI;
+import othello.ai.*;
 import othello.model.Board;
 import othello.model.Listener;
 import othello.view.BoardGUI;
@@ -22,7 +19,6 @@ public class OnePlayerController extends Controller
 		OnePlayerController c = new OnePlayerController(gui);
 		gui.setController(c);
 		
-		
 		c.update();
 	}
 
@@ -31,12 +27,8 @@ public class OnePlayerController extends Controller
 		this.l = l;
 		newGame();
 		
-		r = new GreedyAI();
-		r.setSize(b.getSize());
-		
 		aiThread = new AIThread(r, this, Board.WHITE);
 		aiThread.start();
-		
 	}
 
 	public void update()
