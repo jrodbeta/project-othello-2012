@@ -1,10 +1,6 @@
 package othello.controller;
 
-import othello.ai.AIThread;
-import othello.ai.GreedyAI;
-import othello.ai.GreedyHeuristicAI;
-import othello.ai.PluggableHeuristicAI;
-import othello.ai.ReversiAI;
+import othello.ai.*;
 import othello.model.Board;
 import othello.model.Listener;
 import othello.view.BoardGUI;
@@ -12,12 +8,9 @@ import othello.view.ReversiGUI;
 
 // a controller, where one player (BLACK) is a human, and the other (WHITE) is an AI
 
-public class AIController implements Controller {
-	private Board b; // state of the game (model for this controller)
-	private Listener l; // listener for the game
-	boolean active; // is the game still active
+public class AIController extends Controller {
 
-	AIThread aiThreads[] = new AIThread[2];
+	private AIThread aiThreads[] = new AIThread[2];
 
 	public static void main(String args[]) {
 		ReversiGUI gui = new ReversiGUI(true);
@@ -52,50 +45,15 @@ public class AIController implements Controller {
 		}
 
 	}
-
-	private static String sideToString(Board b) {
-		if (b.getActive() == Board.BLACK)
-			return "Black";
-		else
-			return "White";
-	}
-
+	
 	public void update() {
-		l.setBoard(b);
-		l.setMessage(" ");
-		l.setTurn(sideToString(b) + " to move");
-		l.setScore(b.getScore() + " - " + b.getOpponentScore());
-		l.repaint();
+		super.update();
 
 		if (aiThreads[0] != null) {
 			synchronized (AIThread.syncObject) {
 				AIThread.syncObject.notifyAll();
 			}
 		}
-	}
-
-	private static String scoreToString(Board b) {
-		int a = b.getScore(), o = b.getOpponentScore();
-		return "" + (int) Math.max((double) a, (double) o) + " - "
-				+ (int) Math.min((double) a, (double) o);
-	}
-
-	private static String winnerToString(Board b) {
-		int winner = b.getWinning();
-		if (winner == Board.BLACK)
-			return "Black wins";
-		else if (winner == Board.WHITE)
-			return "White wins";
-		else
-			return "Black and White tie";
-	}
-
-	private void gameOver() {
-		update();
-		l.setMessage("Game over");
-		l.setScore(scoreToString(b));
-		l.setTurn(winnerToString(b));
-		active = false;
 	}
 
 	public void move(int x, int y) {

@@ -1,5 +1,7 @@
 package othello.ai.heuristic;
 
+import othello.ai.*;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,10 +15,11 @@ public class BestScore implements Heuristic {
 		Map<Board, Double> scores = new HashMap<Board, Double>();
 		
 		Board best = null;
-		int score = -1;
+		int maxScore = ReversiAI.MIN_SCORE;
 		for(Board b : boardStates) {
-			if (b.getScore() > score) {
-				score = b.getScore();
+			int score = b.getScore();
+			if (score > maxScore) {
+				maxScore = score;
 				best = b;
 			}
 			

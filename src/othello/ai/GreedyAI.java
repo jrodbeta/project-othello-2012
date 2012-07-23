@@ -19,7 +19,7 @@ public class GreedyAI implements ReversiAI
 	  
     Board b = new Board(prev), best = null;
 
-    int score = -1;
+    int maxScore = MIN_SCORE;
 
     for(int j = 0; j < size; j++)
     {
@@ -27,9 +27,10 @@ public class GreedyAI implements ReversiAI
       {
         if(b.move(i, j)) // valid move
         {
-          if(b.getScore() > score)
+        	int score = b.getScore();
+          if(score > maxScore)
           {
-            score = b.getScore();
+            maxScore = score;
             best = b;
             bestMove = new Point(i,j);
           }

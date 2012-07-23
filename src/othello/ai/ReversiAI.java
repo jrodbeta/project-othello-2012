@@ -9,6 +9,9 @@ import othello.model.Board;
 
 public interface ReversiAI
 {
+	public static final int MAX_SCORE = 1000;
+	public static final int MIN_SCORE = -1000;
+	
   public void setSize(int size); // set the size of the board (necessary before using the AI)
   public Board nextMove(Board prev, int lastx, int lasty); // return board with the next move (passing in coordinates of the previous move
 	public Point getMove();

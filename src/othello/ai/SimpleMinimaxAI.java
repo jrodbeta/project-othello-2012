@@ -8,7 +8,6 @@ import othello.model.Board;
 public class SimpleMinimaxAI implements ReversiAI
 {
 	public static final int MAX_DEPTH = 5;
-	public static final int SCORE_MAX = 10000;
 	
   private int size;
   
@@ -17,9 +16,9 @@ public class SimpleMinimaxAI implements ReversiAI
   private int minMove(Board prev, int depth)
   {
   	// assumption:  it is min player's turn
-  	if(!prev.canMove() || depth > MAX_DEPTH) return prev.getOpponentScore();
+  	if(!prev.canMove() || depth > MAX_DEPTH) return -prev.getScore();
   	
-  	int minScore = SCORE_MAX;
+  	int minScore = MAX_SCORE;
   	Board b = new Board(prev);
   	
   	for(int j = 0; j < size; j++)
@@ -45,7 +44,7 @@ public class SimpleMinimaxAI implements ReversiAI
   	// assumption:  it is max player's turn
   	if(!prev.canMove() || depth > MAX_DEPTH) return prev.getScore();
   	
-  	int maxScore = -SCORE_MAX;
+  	int maxScore = -MAX_SCORE;
   	Board b = new Board(prev);
   	
   	for(int j = 0; j < size; j++)
@@ -70,7 +69,7 @@ public class SimpleMinimaxAI implements ReversiAI
   {
   	if(!prev.canMove()) return null;
   	
-  	int maxScore = -SCORE_MAX;
+  	int maxScore = MAX_SCORE;
   	Board best = null, b = new Board(prev);
   	
   	for(int j = 0; j < size; j++)

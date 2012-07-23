@@ -103,20 +103,20 @@ public class Board
   
   // getter methods
   public int getSize() { return size; }
+  public int getActive() { return active ? BLACK : WHITE; }
+  public String getActiveName() { return active ? "Black" : "White"; }
   
-  public int getActive()
+  // return the total number of squares - for current player or opponent
+  public int getTotal(boolean current)
   {
-    if(active) return BLACK;
-    else return WHITE;
+  	if(current) return active ? bcount : wcount;
+  	else return active ? wcount : bcount;
   }
   
-  public String getActiveName() {
-	  if(active) return "Black";
-	  else return "White";
+  public int getScore()
+  {
+  	return active ? (bcount - wcount) : (wcount - bcount);
   }
-  
-  public int getScore() { if(active) return bcount; else return wcount; }
-  public int getOpponentScore() { if(active) return wcount; else return bcount; }
   
   // get ID of winning player
   public int getWinning()
