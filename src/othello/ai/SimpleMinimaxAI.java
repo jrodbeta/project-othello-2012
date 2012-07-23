@@ -83,7 +83,7 @@ public class SimpleMinimaxAI implements ReversiAI
 
   public Board nextMove(Board prev, int lastx, int lasty)
   {
-  	int maxScore = MAX_SCORE;
+  	int maxScore = MIN_SCORE;
   	Board best = null, b = new Board(prev);
   	bestMove = null;
   	

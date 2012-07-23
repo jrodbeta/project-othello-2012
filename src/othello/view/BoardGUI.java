@@ -12,7 +12,7 @@ public class BoardGUI extends JPanel
 {
 	private static final long serialVersionUID = 1L; /* needed for Eclipse */
 	
-	public static final int ROWS = 4;
+	public static final int ROWS = 8;
   public static final int SIZE = 400;
   public static final int CELLSIZE = SIZE / ROWS;
   public static final double OFFSET = 0.1;
