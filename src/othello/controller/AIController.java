@@ -27,13 +27,13 @@ public class AIController extends Controller {
 		ReversiAI aiWhite = new PluggableHeuristicAI();
 		aiWhite.setSize(b.getSize());
 		
-		ReversiAI aiBlack = new SimpleMinimaxPrunedAI(9);
+		ReversiAI aiBlack = new PluggableHeuristicAI();
 		aiBlack.setSize(b.getSize());
 
-		aiThreads[0] = new AIThread(aiWhite, this, Board.WHITE);
+		aiThreads[0] = new AIThread(aiWhite, this, Board.WHITE, false);
 		aiThreads[0].start();
 
-		aiThreads[1] = new AIThread(aiBlack, this, Board.BLACK);
+		aiThreads[1] = new AIThread(aiBlack, this, Board.BLACK, false);
 		synchronized(aiThreads[1]) {
 			// Black goes first so wait for thread to initialize.
 			aiThreads[1].start();			

@@ -37,9 +37,9 @@ public class GreedyHeuristicAI implements ReversiAI
 		        {
 		          int newscore = 0;
 		          
-		          for(int y = 0; y < 8; y++)
+		          for(int y = 0; y < size; y++)
 		          {
-		            for(int x = 0; x < 8; x++)
+		            for(int x = 0; x < size; x++)
 		            {
 		              int state = b.getState(x, y);
 		              if(state == color) newscore += cost(x, y);

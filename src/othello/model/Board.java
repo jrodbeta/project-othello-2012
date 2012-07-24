@@ -29,7 +29,6 @@ public class Board
   private int inactive_count = 0; // number of pieces inactive player has on the board
   
   private int size;       // dimensions of the board
-  private int moves = 0;  // number of moves made so far (not used yet)
   
   private boolean active = true; // true if it's black's turn, false if it's white's turn
   
@@ -59,10 +58,34 @@ public class Board
   	active_count = b.active_count;
   	inactive_count = b.inactive_count;
 
-    moves = b.moves;
     size = b.size;
     
     active  = b.active;
+  }
+  
+  // hash function - from Thomas Wang - http://www.concentric.net/~ttwang/tech/inthash.htm
+  public int hash6432shift(long key)
+  {
+    key = (~key) + (key << 18); // key = (key << 18) - key - 1;
+    key = key ^ (key >>> 31);
+    key = key * 21; // key = (key + (key << 2)) + (key << 4);
+    key = key ^ (key >>> 11);
+    key = key + (key << 6);
+    key = key ^ (key >>> 22);
+    return (int) key;
+  }
+  
+  public int hashCode()
+  {
+  	long i = hash6432shift(active_board);
+  	i = (i << 32) | hash6432shift(inactive_board);
+  	return hash6432shift(i);
+  }
+  
+  public boolean equals(Board right)
+  {
+  	return (active_board == right.active_board &&
+  			inactive_board == right.inactive_board && active == right.active);
   }
   
   // place a piece at position x, y for the current player
@@ -98,6 +121,8 @@ public class Board
   public int getTotal(boolean current) { return current ? active_count : inactive_count; }
   
   public int getScore() { return active_count - inactive_count; }
+  
+  public int getMoves() { return size * size - (active_count + inactive_count); }
   
   // get ID of winning player
   public int getWinning()

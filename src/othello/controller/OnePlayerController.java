@@ -27,7 +27,7 @@ public class OnePlayerController extends Controller
 		this.l = l;
 		newGame();
 		
-		aiThread = new AIThread(r, this, Board.WHITE);
+		aiThread = new AIThread(r, this, Board.WHITE, false);
 		aiThread.start();
 	}
 	

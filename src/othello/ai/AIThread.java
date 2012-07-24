@@ -10,11 +10,12 @@ public class AIThread extends Thread {
 	
 	public static String syncObject = "Doh!";
 
-	private int color;
-	private Controller controller;
-	private ReversiAI ai;
+	private int color;							// which player
+	private Controller controller;	// controller
+	private ReversiAI ai;						// AI
+	private boolean realtime;				// update in real time, or pause between updates
 
-	public AIThread(ReversiAI ai, Controller controller, int color) {
+	public AIThread(ReversiAI ai, Controller controller, int color, boolean realtime) {
 		if (color == Board.WHITE) {
 			setName("AIThread-WHITE");
 		} else {
@@ -24,6 +25,7 @@ public class AIThread extends Thread {
 		this.controller = controller;
 		this.color = color;
 		this.ai = ai;
+		this.realtime = realtime;
 	}
 
 	@Override
@@ -71,7 +73,7 @@ public class AIThread extends Thread {
 				long sleepTime = MIN_WAIT - diff;
 				
 				// Think about our move.
-				if(sleepTime > 10) {
+				if(!realtime && sleepTime > 10) {
 					try {
 						Thread.sleep(sleepTime);
 					} catch (InterruptedException e) {
