@@ -7,15 +7,15 @@ import othello.model.Board;
 
 public class AIThread extends Thread {
 	private static final int MIN_WAIT = 1000;
+	private static final boolean REALTIME_PLAY = false; // move in real time
 	
 	public static String syncObject = "Doh!";
 
 	private int color;							// which player
 	private Controller controller;	// controller
 	private ReversiAI ai;						// AI
-	private boolean realtime;				// update in real time, or pause between updates
 
-	public AIThread(ReversiAI ai, Controller controller, int color, boolean realtime) {
+	public AIThread(ReversiAI ai, Controller controller, int color) {
 		if (color == Board.WHITE) {
 			setName("AIThread-WHITE");
 		} else {
@@ -25,7 +25,6 @@ public class AIThread extends Thread {
 		this.controller = controller;
 		this.color = color;
 		this.ai = ai;
-		this.realtime = realtime;
 	}
 
 	@Override
@@ -73,7 +72,7 @@ public class AIThread extends Thread {
 				long sleepTime = MIN_WAIT - diff;
 				
 				// Think about our move.
-				if(!realtime && sleepTime > 10) {
+				if(!REALTIME_PLAY && sleepTime > 10) {
 					try {
 						Thread.sleep(sleepTime);
 					} catch (InterruptedException e) {
@@ -94,6 +93,6 @@ public class AIThread extends Thread {
 	}
 
 	private void log(String msg) {
-		System.out.println(getName() + "-" + msg);
+		if(Controller.LOG_ENABLED) System.out.println(getName() + "-" + msg);
 	}
 }

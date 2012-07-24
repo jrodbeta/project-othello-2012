@@ -27,7 +27,7 @@ public class OnePlayerController extends Controller
 		this.l = l;
 		newGame();
 		
-		aiThread = new AIThread(r, this, Board.WHITE, false);
+		aiThread = new AIThread(r, this, Board.WHITE);
 		aiThread.start();
 	}
 	
@@ -37,7 +37,8 @@ public class OnePlayerController extends Controller
 	{
 		active = true;
 		b = new Board(BoardGUI.ROWS);
-		r = new PluggableHeuristicAI();
+		//r = new PluggableHeuristicAI();
+		r = new RandomAI();
 		r.setSize(b.getSize());
 		update();
 		l.setMessage("New game");
@@ -91,6 +92,6 @@ public class OnePlayerController extends Controller
 	}
 	
 	public void playerLog(String msg) {
-		System.out.println(b.getActiveName() + "-" + msg);
+		if(LOG_ENABLED) System.out.println(b.getActiveName() + "-" + msg);
 	}
 }

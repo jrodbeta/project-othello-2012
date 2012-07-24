@@ -6,6 +6,8 @@ import othello.model.Listener;
 // interface for the controller in the Model-View-Controller for Reversi
 public abstract class Controller
 {
+	public static final boolean LOG_ENABLED = true; // enable logging of messages
+	
 	protected Board b; // state of the game (model for this controller)
 	protected Listener l; // listener for the game
 	protected boolean active; // is the game still active
