@@ -24,7 +24,7 @@ public class ReversiGUI extends JFrame implements Listener
   
   private Controller c;														// mediate between model and view
   
-  public ReversiGUI(boolean inputEnabled) // build the GUI - status info, a board, and two buttons
+  public ReversiGUI() // build the GUI - status info, a board, and two buttons
   {
     super("Reversi");
     JComponent content = (JComponent) getContentPane();
@@ -57,7 +57,7 @@ public class ReversiGUI extends JFrame implements Listener
     buttonPanel.add(newGame);
     buttonPanel.add(quitGame);
     
-    if(inputEnabled) gameBoard.addMouseListener(new BoardActionListener());
+    gameBoard.addMouseListener(new BoardActionListener());
     
     content.add(gameBoard, BorderLayout.CENTER);
     content.add(infoPanel, BorderLayout.PAGE_START);

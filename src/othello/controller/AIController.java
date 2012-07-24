@@ -13,9 +13,8 @@ public class AIController extends Controller {
 	private AIThread aiThreads[] = new AIThread[2]; // each thread runs one AI
 
 	public static void main(String args[]) {
-		ReversiGUI gui = new ReversiGUI(false);
+		ReversiGUI gui = new ReversiGUI();
 		AIController c = new AIController(gui);
-		gui.setController(c);
 
 		c.update();
 	}
@@ -24,10 +23,10 @@ public class AIController extends Controller {
 		this.l = l;
 		newGame();
 
-		ReversiAI aiWhite = new PluggableHeuristicAI();
+		ReversiAI aiWhite = new RandomAI();
 		aiWhite.setSize(b.getSize());
 		
-		ReversiAI aiBlack = new PluggableHeuristicAI();
+		ReversiAI aiBlack = new GreedyAI();
 		aiBlack.setSize(b.getSize());
 
 		aiThreads[0] = new AIThread(aiWhite, this, Board.WHITE);
@@ -84,7 +83,7 @@ public class AIController extends Controller {
 		}
 
 		// no more moves possible, game over
-		System.out.println("No more possible moves so ending.");
+		playerLog("No more possible moves so ending.");
 		update();
 		gameOver();
 		return;

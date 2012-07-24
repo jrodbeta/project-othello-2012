@@ -15,7 +15,7 @@ public class OnePlayerController extends Controller
 
 	public static void main(String args[])
 	{
-		ReversiGUI gui = new ReversiGUI(true);
+		ReversiGUI gui = new ReversiGUI();
 		OnePlayerController c = new OnePlayerController(gui);
 		gui.setController(c);
 		
@@ -37,8 +37,7 @@ public class OnePlayerController extends Controller
 	{
 		active = true;
 		b = new Board(BoardGUI.ROWS);
-		//r = new PluggableHeuristicAI();
-		r = new RandomAI();
+		r = new PluggableHeuristicAI();
 		r.setSize(b.getSize());
 		update();
 		l.setMessage("New game");

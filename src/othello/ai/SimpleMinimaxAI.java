@@ -3,17 +3,13 @@ import java.awt.Point;
 
 import othello.model.Board;
 
-// very simple AI - return the board reflecting the move that captures the most pieces
-
-public class SimpleMinimaxAI implements ReversiAI
+// A depth-limited minimax search, with utility function = player's net score
+public class SimpleMinimaxAI extends ReversiAI
 {
-  private int size;
   private int maxDepth;
-  private Point bestMove;
   private int moves;
   
   public SimpleMinimaxAI(int depth) { maxDepth = depth; }
-  public void setSize(int boardsize) { size = boardsize; }
   
   private int minMove(Board prev, int depth)
   {
@@ -88,7 +84,8 @@ public class SimpleMinimaxAI implements ReversiAI
 
   public Board nextMove(Board prev, int lastx, int lasty)
   {
-  	moves = 0; // fixme
+  	startTimer();
+  	moves = 0;
   	long start = System.currentTimeMillis();
   	int maxScore = MIN_SCORE;
   	Board best = null, b = new Board(prev);
@@ -113,19 +110,18 @@ public class SimpleMinimaxAI implements ReversiAI
   			}
   		}
   	}
-  	System.out.println("elapsed: " + ((float)(System.currentTimeMillis()-start)/1000));
-  	System.out.println("moves: " + moves);
+  	//System.out.println("elapsed: " + ((float)(System.currentTimeMillis()-start)/1000));
+  	//System.out.println("moves: " + moves);
+  	stopTimer();
   	return best;
   }
   
-  private int printMsg(boolean max, int depth, int score, int x, int y)
+  /*private int printMsg(boolean max, int depth, int score, int x, int y)
   {
   	for(int i = 0; i < depth; i++) System.out.print("  ");
   	if(max) System.out.print("max ");
   	else System.out.print("min ");
   	System.out.println("(" + x + "," + y + "): " + score);
   	return score;
-  }
-  
-	public Point getMove() { return bestMove; }
+  }*/
 }

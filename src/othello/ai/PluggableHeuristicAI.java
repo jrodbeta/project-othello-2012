@@ -12,25 +12,18 @@ import othello.ai.heuristic.BestScore;
 import othello.ai.heuristic.Heuristic;
 import othello.model.Board;
 
-public class PluggableHeuristicAI implements ReversiAI {
+public class PluggableHeuristicAI extends ReversiAI {
 	
 	private Set<Heuristic> heuristics;
-
-	private int size;
-	private Point bestMove;
 
 	{
 		heuristics = new HashSet<Heuristic>();
 		heuristics.add( new BestScore() );
 	}
-	
-	@Override
-	public void setSize(int size) {
-		this.size = size;
-	}
 
 	@Override
 	public Board nextMove(Board prev, int lastx, int lasty) {
+		startTimer();
 		bestMove = null;
 
 		Board b = new Board(prev);
@@ -94,13 +87,7 @@ public class PluggableHeuristicAI implements ReversiAI {
 		}
 		
 		bestMove = moves.get(bestBoard);
-		
+		stopTimer();
 		return bestBoard;
 	}
-
-	@Override
-	public Point getMove() {
-		return bestMove;
-	}
-
 }

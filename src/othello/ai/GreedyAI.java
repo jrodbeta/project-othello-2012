@@ -5,16 +5,12 @@ import othello.model.Board;
 
 // very simple AI - return the board reflecting the move that captures the most pieces
 
-public class GreedyAI implements ReversiAI
+public class GreedyAI extends ReversiAI
 {
-  private int size;
-  private Point bestMove;
-
-  public void setSize(int size) { this.size = size; }
 
   public Board nextMove(Board prev, int lastx, int lasty)
   {
-	  // Just for shits and giggles
+  	startTimer();
 	  bestMove = null;
 	  
     Board b = new Board(prev), best = null;
@@ -38,11 +34,7 @@ public class GreedyAI implements ReversiAI
         }
       }
     }
+    stopTimer();
     return best;
   }
-  
-  @Override
-	public Point getMove() {
-		return bestMove;
-	}
 }

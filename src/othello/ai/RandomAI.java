@@ -5,20 +5,16 @@ import java.util.Random;
 
 import othello.model.Board;
 
-// very simple AI - return the board reflecting the move that captures the most pieces
-
-public class RandomAI implements ReversiAI
+// very simple AI - make a random move
+public class RandomAI extends ReversiAI
 {
-  private int size;
-  private Point bestMove;
   private Random rand = new Random();
   
-  private static final int MAX_TRIES = 256;
-
-  public void setSize(int size) { this.size = size; }
+  private static final int MAX_TRIES = 128;
 
   public Board nextMove(Board prev, int lastx, int lasty)
   {
+  	startTimer();
   	Board b = new Board(prev);
   	bestMove = null;
   	int i, j, c = 0;
@@ -30,12 +26,15 @@ public class RandomAI implements ReversiAI
   		c++;
   	} while(!b.move(i, j) && c < MAX_TRIES);
   	
-  	System.out.println(c + " tries");
-  	if(!b.equals(prev)) bestMove = new Point(i, j);
+  	if(!b.equals(prev))
+  	{
+  		bestMove = new Point(i, j);
+  		stopTimer();
+  		return b;
+  	}
   	
   	else // if no moves succeeded, attempt iteratively to find a possible move
   	{
-  		System.out.println("random moves failed");
   		for(j = 0; j < size; j++)
   		{
   			for(i = 0; i < size; i++)
@@ -43,18 +42,15 @@ public class RandomAI implements ReversiAI
   				if(b.move(i, j))
   				{
   					bestMove = new Point(i, j);
-  					break;
+  					stopTimer();
+  					return b;
   				}
   			}
   		}
-  		if(!b.equals(prev)) b = null; // no move possible
   	}
   	
-  	return b;
+  	stopTimer();
+  	return null;
   }
   
-  @Override
-	public Point getMove() {
-		return bestMove;
-	}
 }

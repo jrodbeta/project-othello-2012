@@ -1,18 +1,13 @@
 package othello.ai;
 
-import java.awt.Point;
-
 import othello.model.Board;
 
-public class MobilityHeuristicAI implements ReversiAI {
+public class MobilityHeuristicAI extends ReversiAI {
 
-	private Point bestMove;
-	private int size;
-
-	public void setSize(int size) { this.size = size; }
 
 	public Board nextMove(Board prev, int lastx, int lasty)
 	{
+		startTimer();
 		Board b = new Board(prev), best = null;
 		Board temp;
 		  
@@ -50,14 +45,7 @@ public class MobilityHeuristicAI implements ReversiAI {
 			  }
 		  }
 	  }
+		stopTimer();
 	  return best;
-	}
-
-
-
-	@Override
-	public Point getMove() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
