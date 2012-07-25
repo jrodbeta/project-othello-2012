@@ -1,5 +1,6 @@
 package othello.ai;
 import java.awt.Point;
+import java.util.Random;
 
 import othello.model.Board;
 
@@ -7,7 +8,15 @@ import othello.model.Board;
 
 public class GreedyAI extends ReversiAI
 {
-
+  private Random r = new Random();
+  
+  public GreedyAI() { this(false); }
+  
+  public GreedyAI(boolean deterministic)
+  {
+  	if(deterministic) r = new Random(SEED);
+  }
+	
   public Board nextMove(Board prev, int lastx, int lasty)
   {
   	startTimer();
@@ -24,7 +33,7 @@ public class GreedyAI extends ReversiAI
         if(b.move(i, j)) // valid move
         {
         	int score = b.getScore();
-          if(score > maxScore)
+          if(score > maxScore || (score == maxScore && r.nextDouble() < OVERRIDE))
           {
             maxScore = score;
             best = b;

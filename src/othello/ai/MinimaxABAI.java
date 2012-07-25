@@ -1,15 +1,23 @@
 package othello.ai;
 import java.awt.Point;
+import java.util.*;
 
 import othello.model.Board;
 
-// A depth-limited minimax search, with alpha-beta pruning
-public class SimpleMinimaxPrunedAI extends ReversiAI
+// Minimax search, with alpha-beta pruning
+// utility function is value of the board
+public class MinimaxABAI extends ReversiAI
 {
   private int maxDepth;
   private int moves;
   
-  public SimpleMinimaxPrunedAI(int depth) { maxDepth = depth; }
+  private Random r = new Random();
+  
+  public MinimaxABAI(int depth, boolean deterministic)
+  {
+  	maxDepth = depth;
+  	if(deterministic) r = new Random(SEED);
+  	}
   
   private int minMove(Board prev, int depth, int alpha, int beta)
   {
@@ -105,7 +113,7 @@ public class SimpleMinimaxPrunedAI extends ReversiAI
   				int score = minMove(b, 1, alpha, beta);
   				//printMsg(true, 0, score, i, j); // fixme
   				
-  				if(score > maxScore)
+  				if(score > maxScore || (score == maxScore && r.nextDouble() < OVERRIDE))
   				{
   					bestMove = new Point(i,j);
   					maxScore = score;

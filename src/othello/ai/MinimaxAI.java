@@ -1,15 +1,24 @@
 package othello.ai;
 import java.awt.Point;
+import java.util.*;
 
 import othello.model.Board;
 
-// A depth-limited minimax search, with utility function = player's net score
-public class SimpleMinimaxAI extends ReversiAI
+// Simple minimax AI search where utility function is just the value of the board
+public class MinimaxAI extends ReversiAI
 {
   private int maxDepth;
   private int moves;
   
-  public SimpleMinimaxAI(int depth) { maxDepth = depth; }
+  private Random r = new Random();
+  
+  public MinimaxAI() { this(5, false); }
+  
+  public MinimaxAI(int depth, boolean deterministic)
+  {
+  	maxDepth = depth;
+  	if(deterministic) r = new Random(SEED);
+  }
   
   private int minMove(Board prev, int depth)
   {
@@ -100,7 +109,7 @@ public class SimpleMinimaxAI extends ReversiAI
   				int score = minMove(b, 1);
   				//printMsg(true, 0, score, i, j); // fixme
   				
-  				if(score > maxScore)
+  				if(score > maxScore || (score == maxScore && r.nextDouble() < OVERRIDE))
   				{
   					bestMove = new Point(i,j);
   					maxScore = score;

@@ -13,9 +13,9 @@ public class AIController extends Controller {
 	private AIThread aiThreads[] = new AIThread[2]; // each thread runs one AI
 
 	public static void main(String args[]) {
-		ReversiGUI gui = new ReversiGUI();
+		ReversiGUI gui = new ReversiGUI(false);
 		AIController c = new AIController(gui);
-
+		gui.setController(c);
 		c.update();
 	}
 
@@ -23,10 +23,10 @@ public class AIController extends Controller {
 		this.l = l;
 		newGame();
 
-		ReversiAI aiWhite = new RandomAI();
+		ReversiAI aiWhite = new GreedyHeuristicAI();
 		aiWhite.setSize(b.getSize());
 		
-		ReversiAI aiBlack = new GreedyAI();
+		ReversiAI aiBlack = new MinimaxABAI(3, false);
 		aiBlack.setSize(b.getSize());
 
 		aiThreads[0] = new AIThread(aiWhite, this, Board.WHITE);

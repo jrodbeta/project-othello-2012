@@ -13,6 +13,9 @@ public abstract class ReversiAI
 	public static final int MIN_SCORE = -1000;
 	private static final int BAD_TIME = -1000;
 	
+	protected static final double OVERRIDE = 0.3;
+	protected static final int SEED = 1000;
+	
 	protected int size;
 	protected Point bestMove;
 	protected double elapsed = 0.0;

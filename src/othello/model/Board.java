@@ -172,7 +172,7 @@ public class Board
   
   public Point getLastPlayerMove() {
   	if(active) return new Point(blast % size, blast / size);
-  	else return new Point(wlast % size, blast / size);
+  	else return new Point(wlast % size, wlast / size);
   }
 
   // end current player's turn
