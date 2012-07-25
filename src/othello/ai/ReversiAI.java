@@ -14,6 +14,7 @@ public abstract class ReversiAI
 	private static final int BAD_TIME = -1000;
 	
 	protected static final double OVERRIDE = 0.3;
+	protected static final int DEPTH = 3;
 	protected static final int SEED = 1000;
 	
 	protected int size;

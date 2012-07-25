@@ -12,7 +12,7 @@ public class MinimaxAI extends ReversiAI
   
   private Random r = new Random();
   
-  public MinimaxAI() { this(5, false); }
+  public MinimaxAI() { this(DEPTH, false); }
   
   public MinimaxAI(int depth, boolean deterministic)
   {

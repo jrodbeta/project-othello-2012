@@ -13,11 +13,13 @@ public class MinimaxABAI extends ReversiAI
   
   private Random r = new Random();
   
+  public MinimaxABAI() { this(DEPTH, false); }
+  
   public MinimaxABAI(int depth, boolean deterministic)
   {
   	maxDepth = depth;
   	if(deterministic) r = new Random(SEED);
-  	}
+  }
   
   private int minMove(Board prev, int depth, int alpha, int beta)
   {

@@ -18,7 +18,7 @@ public class TestController
 	
 	public static void main(String args[])
 	{
-		TestController game = new TestController(BoardGUI.ROWS, new RandomAI(), new SimpleMinimaxPrunedAI2(3));
+		TestController game = new TestController(BoardGUI.ROWS, new MinimaxABAI(4, false), new MinimaxABHeuristicAI(2, false));
 		game.run(100);
 		game.report();
 	}
@@ -35,11 +35,7 @@ public class TestController
 	
 	public void run(int n)
 	{
-		System.out.print("0%");
-		for(int i = 1; i < 10; i++) System.out.print("       " + 10*i + "%");
-		System.out.println("       100%");
-		for(int i = 0; i < 10; i++) System.out.print("|         ");
-		System.out.println("|");
+		printHeader();
 		
 		System.out.print("=");
 		for(int i = 0; i < n; i++)
@@ -48,6 +44,15 @@ public class TestController
 			play();
 		}
 		System.out.println("=\n");
+	}
+	
+	private static void printHeader()
+	{
+		System.out.print("0%");
+		for(int i = 1; i < 10; i++) System.out.print("       " + 10*i + "%");
+		System.out.println("       100%");
+		for(int i = 0; i < 10; i++) System.out.print("|         ");
+		System.out.println("|");
 	}
 	
 	public void report()
