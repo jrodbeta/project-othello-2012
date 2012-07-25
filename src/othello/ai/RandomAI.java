@@ -8,10 +8,17 @@ import othello.model.Board;
 // very simple AI - make a random move
 public class RandomAI extends ReversiAI
 {
-  private Random rand = new Random();
+  private Random r = new Random();
   
   private static final int MAX_TRIES = 128;
 
+  public RandomAI() { this(false); }
+  
+  public RandomAI(boolean deterministic)
+  {
+  	if(deterministic) r = new Random(SEED);
+  }
+  
   public Board nextMove(Board prev, int lastx, int lasty)
   {
   	startTimer();
@@ -21,8 +28,8 @@ public class RandomAI extends ReversiAI
   	
   	do // try random moves, until one works, or we exhaust MAX_TRIES attempts
   	{
-  		i = rand.nextInt(8);
-  		j = rand.nextInt(8);
+  		i = r.nextInt(8);
+  		j = r.nextInt(8);
   		c++;
   	} while(!b.move(i, j) && c < MAX_TRIES);
   	
