@@ -8,13 +8,14 @@ import othello.view.*;
 // controller for a two AI test harness
 public class TestController
 {
-	private static final boolean VERBOSE = false;
+	private static final boolean VERBOSE = false; // enable information messages - not good for batch runs
 
-	private ReversiAI blackAI, whiteAI;
-	private int boardSize;
-	private int runs = 0;
-	private int bwins = 0;
-	private int wwins = 0;
+	private ReversiAI blackAI;	// black AI
+	private ReversiAI whiteAI;	// white AI
+	private int boardSize;			// size of game board
+	private int runs = 0;				// number of times game was played
+	private int bwins = 0;			// number of wins by black
+	private int wwins = 0;			// number of wins by white
 	
 	public static void main(String args[])
 	{
@@ -23,6 +24,7 @@ public class TestController
 		game.report();
 	}
 	
+	// create a new tester, with a given size and specified AIs for black and white
 	public TestController(int boardSize, ReversiAI black, ReversiAI white)
 	{
 		this.boardSize = boardSize;
@@ -33,6 +35,7 @@ public class TestController
 		whiteAI.setSize(boardSize);
 	}
 	
+	// run AIs against each other n times
 	public void run(int n)
 	{
 		printHeader();
@@ -55,6 +58,7 @@ public class TestController
 		System.out.println("|");
 	}
 	
+	// display win/loss statistics for runs completed by the tester
 	public void report()
 	{
 		System.out.format("Black: " + blackAI.getClass().getName() + " (%.2fs)\n", blackAI.getElapsedTime());
@@ -73,36 +77,43 @@ public class TestController
 	{
 		runs++;
 		
-		ReversiAI activeAI = blackAI, inactiveAI = whiteAI;
-		Board b = new Board(boardSize);
+		ReversiAI activeAI = blackAI, inactiveAI = whiteAI; // black is first to move
+		ReversiAI aiTemp;
+		Board b = new Board(boardSize); // create game board
 		Point p = new Point(-1, -1);
 		if(VERBOSE) b.print();
 		
 		while(true)
 		{
 			log(b.getActiveName() + " to move.");
-			Board tmp = activeAI.nextMove(b, p.x, p.y);
-			ReversiAI aiTemp;
-			if(tmp == null) 
+			Board tmp = activeAI.nextMove(b, p.x, p.y); // get the next move
+
+			if(tmp == null) // player couldn't move
 			{
 				log(b.getActiveName() + " can't move.");
-				b.turn();
+				b.turn(); // next player's turn
 				log(b.getActiveName() + " to move.");
-				{ aiTemp = activeAI; activeAI = inactiveAI; inactiveAI = aiTemp; }
+				{ aiTemp = activeAI; activeAI = inactiveAI; inactiveAI = aiTemp; } // swap players
 				tmp = activeAI.nextMove(b, -1, -1);
+				
+				if(tmp == null) break; // neither player could move
 			}
-			if(tmp == null) break;
 			
-			b = tmp;
+			b = tmp; // save new board
+			
 			p = activeAI.getMove();
-			
 			log(b.getActiveName() + " move to (" + p.x + "," + p.y + ").");
 			if(VERBOSE) b.print();
 			
-			b.turn();
+			b.turn(); // next player's turn
 			{ aiTemp = activeAI; activeAI = inactiveAI; inactiveAI = aiTemp; } // switch AIs
 		}
 		
+		log(winnerString(b));
+	}
+	
+	private String winnerString(Board b)
+	{
 		String msg;
 		int winner = b.getWinning();
 		if(winner != b.getActive()) b.turn();
@@ -110,8 +121,10 @@ public class TestController
 		if(winner == Board.EMPTY) msg = "Tie: ";
 		else if(winner == Board.WHITE) { wwins++; msg = "White wins: "; }
 		else { bwins++; msg = "Black wins: "; }
-		msg += b.getTotal(true) + " - " + b.getTotal(false) + " (" + ((boardSize * boardSize) - b.getMoves()) + " moves)";
-		log(msg);
+		
+		msg += b.getTotal(true) + " - " + b.getTotal(false) + " (" +
+				((boardSize * boardSize) - b.getMoves()) + " moves)";
+		return msg;
 	}
 	
 	public void log(String msg)
