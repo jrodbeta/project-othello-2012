@@ -9,16 +9,19 @@ import java.util.Map;
 import java.util.Set;
 
 import othello.ai.heuristic.BestScore;
+import othello.ai.heuristic.EvalPosition;
 import othello.ai.heuristic.Heuristic;
 import othello.model.Board;
+import othello.view.BoardGUI;
 
 public class PluggableHeuristicAI extends ReversiAI {
 	
-	private Set<Heuristic> heuristics;
+	private Map<Heuristic, Double> heuristics;
 
 	{
-		heuristics = new HashSet<Heuristic>();
-		heuristics.add( new BestScore() );
+		heuristics = new HashMap<Heuristic, Double>();
+		heuristics.put( new BestScore(), 0.5 );
+		heuristics.put( new EvalPosition(BoardGUI.ROWS), 1.0 );
 	}
 
 	@Override
@@ -47,7 +50,7 @@ public class PluggableHeuristicAI extends ReversiAI {
 		Map<Board, Double> scores;
 		Double prevValue = null;
 		
-		for(Heuristic h : heuristics) {
+		for(Heuristic h : heuristics.keySet()) {
 			scores = h.getUtility(boards);
 			
 			// 1 - (-1) = 2
@@ -57,17 +60,24 @@ public class PluggableHeuristicAI extends ReversiAI {
 			// -1 - 1 = -2
 			// 1 / -2 = -0.5
 			// -0.5 + -0.5 = -1
+			// offset = -1 - (-0.5) = -0.5
 			
 			// Based off rules of heuristic change evaluation
 			// to range of 0 to 1, 1 being highest.
 			
 			double divisor = h.getMax() - h.getMin();
-			double offset = h.getMax() * divisor;
+			double offset = h.getMax() - divisor;
+			double weight = heuristics.get(h);
+
+//			System.out.println(h.getClass().getSimpleName());
 			
 			for(Board key : boards) {
-				double value = scores.get(key) / divisor;
+				double value = (divisor != 0) ? scores.get(key) / divisor:
+								scores.get(key);
 				value += offset;
-				value = Math.abs(value);
+				value = Math.abs(value) * weight;
+				
+//				System.out.println(value);
 				
 				if((prevValue = overall.get(key)) == null) {
 					overall.put(key, value);
