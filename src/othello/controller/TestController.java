@@ -19,8 +19,8 @@ public class TestController
 	
 	public static void main(String args[])
 	{
-		TestController game = new TestController(BoardGUI.ROWS, new RandomAI(), new GreedyHeuristicAI());
-		game.run(1000);
+		TestController game = new TestController(BoardGUI.ROWS, new MinimaxABAI(4, false), new MinimaxABAI(4, false));
+		game.run(100);
 		game.report();
 	}
 	
