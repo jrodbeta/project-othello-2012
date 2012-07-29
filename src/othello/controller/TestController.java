@@ -19,7 +19,7 @@ public class TestController
 	
 	public static void main(String args[])
 	{
-		TestController game = new TestController(BoardGUI.ROWS, new MinimaxABAI(4, false), new MinimaxABAI(4, false));
+		TestController game = new TestController(BoardGUI.ROWS, new MinimaxABHeuristicAI(), new MinimaxABHeuristicAI2());
 		game.run(100);
 		game.report();
 	}
