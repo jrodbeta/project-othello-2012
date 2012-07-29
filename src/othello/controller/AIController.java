@@ -26,7 +26,7 @@ public class AIController extends Controller {
 		ReversiAI aiWhite = new GreedyHeuristicAI();
 		aiWhite.setSize(b.getSize());
 		
-		ReversiAI aiBlack = new MinimaxABAI(3, false);
+		ReversiAI aiBlack = new GreedyAI();
 		aiBlack.setSize(b.getSize());
 
 		aiThreads[0] = new AIThread(aiWhite, this, Board.WHITE);

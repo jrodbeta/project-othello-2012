@@ -35,6 +35,13 @@ public class TwoPlayerController extends Controller
   
     b.turn(); /* switch to next player's turn */
     
+    // fixme
+    //System.out.println("player is " + b.getActiveName());
+    //System.out.println("corners: " + b.getCornerCount(true) + " opponent: " + b.getCornerCount(false));
+    //System.out.println("frontier discs:" + b.getFrontierCount(true) + " opponent: " + b.getFrontierCount(false));
+    //System.out.println("empty corner neighbors:" + b.getEmptyCornerNeighbors(true) + " opponent: " + b.getEmptyCornerNeighbors(false));
+    
+    
     if(b.canMove()) /* if  player can move, let them */
     {
       update();

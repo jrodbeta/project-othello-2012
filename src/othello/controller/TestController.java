@@ -21,17 +21,9 @@ public class TestController implements Logger
 	
 	public static void main(String args[])
 	{
-		//TestController game = new TestController(BoardGUI.ROWS, new RandomAI(), new GreedyHeuristicAI());
-		TestController game = new TestController(BoardGUI.ROWS, new PluggableHeuristicAI(), new GreedyHeuristicAI());
-//		TestController game = new TestController(BoardGUI.ROWS, new GreedyHeuristicAI(), new PluggableHeuristicAI());
-//		TestController game = new TestController(BoardGUI.ROWS, new GreedyHeuristicAI(), new GreedyAI());
-//		TestController game = new TestController(BoardGUI.ROWS, new GreedyAI(), new GreedyHeuristicAI());
-//		TestController game = new TestController(BoardGUI.ROWS, 
-//				new PluggableHeuristicAI(), 
-//				new PluggableHeuristicAI(PluggableHeuristicAI.EVAL_POSITION));
-		
-		
-		game.run(1000);
+
+		TestController game = new TestController(BoardGUI.ROWS, new MinimaxABHeuristicAI(), new MinimaxABHeuristicAI());
+		game.run(100);
 		game.report();
 	}
 	
