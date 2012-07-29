@@ -3,14 +3,13 @@ package othello.ai;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import othello.ai.heuristic.BestScore;
 import othello.ai.heuristic.EvalPosition;
 import othello.ai.heuristic.Heuristic;
+import othello.ai.heuristic.Mobility;
 import othello.model.Board;
 import othello.view.BoardGUI;
 
@@ -22,6 +21,7 @@ public class PluggableHeuristicAI extends ReversiAI {
 		heuristics = new HashMap<Heuristic, Double>();
 		heuristics.put( new BestScore(), 0.5 );
 		heuristics.put( new EvalPosition(BoardGUI.ROWS), 1.0 );
+		heuristics.put( new Mobility(BoardGUI.ROWS), 0.25);
 	}
 
 	@Override
