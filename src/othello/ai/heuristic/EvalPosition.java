@@ -11,11 +11,17 @@ public class EvalPosition implements Heuristic {
 
 	private int size;
 
+//	private int[][] weights = { 
+//			{ 50,  -1, 5, 2 }, 
+//			{ -1, -10, 1, 1 },
+//			{  5,   1, 1, 1 }, 
+//			{  2,   1, 1, 0 } };
 	private int[][] weights = { 
-			{ 50,  -1, 5, 2 }, 
-			{ -1, -10, 1, 1 },
-			{  5,   1, 1, 1 }, 
-			{  2,   1, 1, 0 } };
+			{ 20,  -3,  5,  2 }, 
+			{ -3,  -7, -4,  1 },
+			{  11, -4,  2,  2 }, 
+			{  8,   1,  2, -3 } };
+
 
 	public int cost(int x, int y) {
 		if (x > (size - 1) / 2)

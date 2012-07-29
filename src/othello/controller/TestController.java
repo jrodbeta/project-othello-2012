@@ -6,7 +6,7 @@ import othello.model.Board;
 import othello.view.*;
 
 // controller for a two AI test harness
-public class TestController
+public class TestController implements Logger
 {
 	private static final boolean VERBOSE = false; // enable information messages - not good for batch runs
 
@@ -16,10 +16,13 @@ public class TestController
 	private int runs = 0;				// number of times game was played
 	private int bwins = 0;			// number of wins by black
 	private int wwins = 0;			// number of wins by white
+
+	private Logger logger;
 	
 	public static void main(String args[])
 	{
-		TestController game = new TestController(BoardGUI.ROWS, new MinimaxABAI(4, false), new MinimaxABAI(4, false));
+
+		TestController game = new TestController(BoardGUI.ROWS, new MinimaxABHeuristicAI(), new MinimaxABHeuristicAI());
 		game.run(100);
 		game.report();
 	}
@@ -33,6 +36,8 @@ public class TestController
 		blackAI.setSize(boardSize);
 		whiteAI = white;
 		whiteAI.setSize(boardSize);
+		
+		this.logger = this;
 	}
 	
 	// run AIs against each other n times
@@ -40,43 +45,48 @@ public class TestController
 	{
 		printHeader();
 		
-		System.out.print("=");
+		logger.log("=");
 		for(int i = 0; i < n; i++)
 		{
-			if((100*(i-1))/n < (100*i)/n) System.out.print("=");
+			if((100*(i-1))/n < (100*i)/n) logger.log("=");
 			play();
 		}
-		System.out.println("=\n");
+		logger.logln("=\n");
 	}
 	
-	private static void printHeader()
+	private void printHeader()
 	{
-		System.out.print("0%");
-		for(int i = 1; i < 10; i++) System.out.print("       " + 10*i + "%");
-		System.out.println("       100%");
-		for(int i = 0; i < 10; i++) System.out.print("|         ");
-		System.out.println("|");
+		logger.log("0%");
+		for(int i = 1; i < 10; i++) {
+			logger.log("       " + 10*i + "%");
+		}
+		logger.logln("       100%");
+		for(int i = 0; i < 10; i++) {
+			logger.log("|         ");
+		}
+		logger.logln("|");
 	}
 	
 	// display win/loss statistics for runs completed by the tester
 	public void report()
 	{
-		System.out.format("Black: " + blackAI.getClass().getName() + " (%.2fs)\n", blackAI.getElapsedTime());
-		System.out.format("White: " + whiteAI.getClass().getName() + " (%.2fs)\n", whiteAI.getElapsedTime());
-		System.out.println("");
-		System.out.println("Winner Statistics");
-		System.out.println("Player  Wins");
-		System.out.println("Black   " + bwins);
-		System.out.println("White   " + wwins);
-		System.out.println("Tie     " + (runs - bwins - wwins));
-		System.out.println("Total   " + runs);
-		System.out.println("");
+		
+		logger.logln("Black: " + blackAI.getClass().getSimpleName() + String.format(" (%.2fs)", blackAI.getElapsedTime()));
+		logger.logln("White: " + whiteAI.getClass().getSimpleName() + String.format(" (%.2fs)", whiteAI.getElapsedTime()));
+		logger.logln("");
+		logger.logln("Winner Statistics");
+		logger.logln("Player  Wins");
+		logger.logln("Black   " + bwins);
+		logger.logln("White   " + wwins);
+		logger.logln("Tie     " + (runs - bwins - wwins));
+		logger.logln("Total   " + runs);
+		logger.logln("");
 	}
 	
 	public void play()
+	
 	{
 		runs++;
-		
 		ReversiAI activeAI = blackAI, inactiveAI = whiteAI; // black is first to move
 		ReversiAI aiTemp;
 		Board b = new Board(boardSize); // create game board
@@ -85,14 +95,14 @@ public class TestController
 		
 		while(true)
 		{
-			log(b.getActiveName() + " to move.");
+			logDebug(b.getActiveName() + " to move.");
 			Board tmp = activeAI.nextMove(b, p.x, p.y); // get the next move
 
 			if(tmp == null) // player couldn't move
 			{
-				log(b.getActiveName() + " can't move.");
+				logDebug(b.getActiveName() + " can't move.");
 				b.turn(); // next player's turn
-				log(b.getActiveName() + " to move.");
+				logDebug(b.getActiveName() + " to move.");
 				{ aiTemp = activeAI; activeAI = inactiveAI; inactiveAI = aiTemp; } // swap players
 				tmp = activeAI.nextMove(b, -1, -1);
 				
@@ -102,14 +112,14 @@ public class TestController
 			b = tmp; // save new board
 			
 			p = activeAI.getMove();
-			log(b.getActiveName() + " move to (" + p.x + "," + p.y + ").");
+			logDebug(b.getActiveName() + " move to (" + p.x + "," + p.y + ").");
 			if(VERBOSE) b.print();
 			
 			b.turn(); // next player's turn
 			{ aiTemp = activeAI; activeAI = inactiveAI; inactiveAI = aiTemp; } // switch AIs
 		}
 		
-		log(winnerString(b));
+		logDebug(winnerString(b));
 	}
 	
 	private String winnerString(Board b)
@@ -127,8 +137,23 @@ public class TestController
 		return msg;
 	}
 	
-	public void log(String msg)
+	
+	public void logDebug(String msg)
 	{
 		if(VERBOSE) System.out.println(msg);
+	}
+
+	@Override
+	public void log(String msg) {
+		System.out.print(msg);
+	}
+	
+	@Override
+	public void logln(String msg) {
+		System.out.println(msg);
+	}
+	
+	public void setLogger(Logger logger) {
+		this.logger = logger;
 	}
 }

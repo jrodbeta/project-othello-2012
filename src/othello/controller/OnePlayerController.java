@@ -37,7 +37,7 @@ public class OnePlayerController extends Controller
 	{
 		active = true;
 		b = new Board(BoardGUI.ROWS);
-		r = new GreedyAI();
+		r = new MinimaxABHeuristicAI(4, true);
 		r.setSize(b.getSize());
 		update();
 		l.setMessage("New game");

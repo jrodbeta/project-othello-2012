@@ -84,13 +84,23 @@ public class Board
     inactive_board &= ~val;
   }
   
-  // returns true if the given player occupies the given square
-  private boolean getSquare(int x, int y, boolean black)
+  // returns true if the current player occupies the given square
+  private boolean getSquare(int x, int y, boolean current)
   {
     if(x < 0 || y < 0 || x >= size || y >= size) return false;
-  
-    if(black == active) return (active_board & (1L << (y * size + x))) != 0;
+    
+    if(current) return (active_board & (1L << (y * size + x))) != 0;
     else return (inactive_board & (1L << (y * size + x))) != 0;
+  }
+  
+  
+  
+  public boolean isEmptySquare(int x, int y)
+  {
+  	if(x < 0 || y < 0 || x >= size || y >= size) return false;
+  	
+  	long tmp = active_board | inactive_board;
+  	return ((tmp >>> (y * size + x)) & 1L) == 0;
   }
   
   // getter methods
@@ -100,6 +110,58 @@ public class Board
   
   // return the total number of squares - for current player or opponent
   public int getTotal(boolean current) { return current ? active_count : inactive_count; }
+  
+  public int getCornerCount(boolean current)
+  {
+  	long tmp;
+  	if(current) tmp = active_board;
+  	else tmp = inactive_board;
+  	
+  	return (int)((tmp >>> 63) + ((tmp >>> 56) & 1L) + ((tmp >>> 8) & 1L) + (tmp & 1L));
+  }
+  
+  public int getFrontierCount(boolean current)
+  {
+  	int count = 0;
+  	for(int j = 0; j < size; j++)
+  	{
+  		for(int i = 0; i < size; i++)
+  		{
+  			if(getSquare(i, j, current))
+  			{
+  				if(isEmptySquare(i-1, j-1) || isEmptySquare(i-1, j) || isEmptySquare(i-1, j+1)
+  					|| isEmptySquare(i, j-1) || isEmptySquare(i, j + 1)
+  					|| isEmptySquare(i+1, j-1) || isEmptySquare(i+1, j) || isEmptySquare(i+1, j+1))
+  						count++;
+  			}
+  		}
+  	}
+  	return count;
+  }
+  
+  public int getEmptyCornerNeighbors(boolean current)
+  {
+  	int count = 0;
+  	
+  	if(isEmptySquare(0, 0))
+  	{
+  		if(getSquare(0, 1, current) || getSquare(1, 0, current) || getSquare(1, 1, current)) count++;
+  	}
+  	if(isEmptySquare(0, size - 1))
+  	{
+  		if(getSquare(0, size - 2, current) || getSquare(1, size - 2, current) || getSquare(1, size - 1, current)) count++;
+  	}
+  	if(isEmptySquare(size - 1, 0))
+  	{
+  		if(getSquare(size - 2, 0, current) || getSquare(size - 2, 1, current) || getSquare(size - 1, 1, current)) count++;
+  	}
+  	if(isEmptySquare(size - 1, size - 1))
+  	{
+  		if(getSquare(size - 2, size - 2, current) || getSquare(size - 2, size - 1, current) || getSquare(size - 1, size - 2, current)) count++;
+  	}
+  	
+  	return count;
+  }
   
   public int getScore() { return active_count - inactive_count; }
   
@@ -117,8 +179,8 @@ public class Board
   
   public int getState(int x, int y)
   {
-    if(getSquare(x, y, true)) return BLACK;
-    else if(getSquare(x, y, false)) return WHITE;
+    if(getSquare(x, y, true)) return active ? BLACK : WHITE;
+    else if(getSquare(x, y, false)) return active ? WHITE : BLACK;
     else return EMPTY;
   }
   
@@ -233,10 +295,10 @@ public class Board
     if(x <= 0) return; // can't capture - no room
     
     int i;
-    for(i = x; getSquare(i, y, !active); i--) // traverse squares that could be captured
+    for(i = x; getSquare(i, y, false); i--) // traverse squares that could be captured
       if(i == 0) return; // can't capture if reached the edge of the board
       
-    if(i != x && getSquare(i, y, active)) // if capturable square is followed by captured square
+    if(i != x && getSquare(i, y, true)) // if capturable square is followed by captured square
     {
       updateCount(x - i); // number of squares captured
       
@@ -249,10 +311,10 @@ public class Board
     if(x >= size - 1) return;
   
     int i;
-    for(i = x; getSquare(i, y, !active); i++)
+    for(i = x; getSquare(i, y, false); i++)
       if(i == size - 1) return;
       
-    if(i != x && getSquare(i, y, active))
+    if(i != x && getSquare(i, y, true))
     {
       updateCount(i - x);
         
@@ -265,10 +327,10 @@ public class Board
     if(y <= 0) return;
   
     int i;
-    for(i = y; getSquare(x, i, !active); i--)
+    for(i = y; getSquare(x, i, false); i--)
       if(i == 0) return;
       
-    if(i != y && getSquare(x, i, active))
+    if(i != y && getSquare(x, i, true))
     {
       updateCount(y - i);
       
@@ -281,10 +343,10 @@ public class Board
     if(y >= size - 1) return;
   
     int i;
-    for(i = y; getSquare(x, i, !active); i++)
+    for(i = y; getSquare(x, i, false); i++)
       if(i == size - 1) return;
       
-    if(i != y && getSquare(x, i, active))
+    if(i != y && getSquare(x, i, true))
     {
       updateCount(i - y);
       
@@ -297,10 +359,10 @@ public class Board
     if(x <= 0 || y <= 0) return;
   
     int i, j;
-    for(i = x, j = y; getSquare(i, j, !active); i--, j--)
+    for(i = x, j = y; getSquare(i, j, false); i--, j--)
       if(i == 0 || j == 0) return;
       
-    if(i != x && getSquare(i, j, active))
+    if(i != x && getSquare(i, j, true))
     {
       updateCount(x - i);
         
@@ -313,10 +375,10 @@ public class Board
     if(x >= size - 1 || y >= size - 1) return;
   
     int i, j;
-    for(i = x, j = y; getSquare(i, j, !active); i++, j++)
+    for(i = x, j = y; getSquare(i, j, false); i++, j++)
         if(i == size - 1 || j == size - 1) return;
       
-    if(i != x && getSquare(i, j, active))
+    if(i != x && getSquare(i, j, true))
     {
       updateCount(i - x);
         
@@ -329,10 +391,10 @@ public class Board
     if(x >= size - 1 || y <= 0) return;
     
     int i, j;
-    for(i = x, j = y; getSquare(i, j, !active); i++, j--)
+    for(i = x, j = y; getSquare(i, j, false); i++, j--)
         if(i == size - 1 || j == 0) return;
       
-    if(i != x && getSquare(i, j, active))
+    if(i != x && getSquare(i, j, true))
     {
       updateCount(i - x);
       
@@ -345,10 +407,10 @@ public class Board
     if(x <= 0 || y >= size - 1) return;
     
     int i, j;
-    for(i = x, j = y; getSquare(i, j, !active); i--, j++)
+    for(i = x, j = y; getSquare(i, j, false); i--, j++)
       if(i == 0 || j == size - 1) return;
       
-    if(i != x && getSquare(i, j, active))
+    if(i != x && getSquare(i, j, true))
     {
       updateCount(x - i);
         
