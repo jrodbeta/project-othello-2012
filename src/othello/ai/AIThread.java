@@ -6,8 +6,8 @@ import othello.controller.Controller;
 import othello.model.Board;
 
 public class AIThread extends Thread {
-	private static final int MIN_WAIT = 1000;
-	private static final boolean REALTIME_PLAY = false; // move in real time
+	private static final int MIN_WAIT = 50;
+	private static boolean REALTIME_PLAY = false; // move in real time
 	
 	public static String syncObject = "Doh!";
 
@@ -39,8 +39,8 @@ public class AIThread extends Thread {
 			// until notified by an outside source.
 			synchronized (syncObject) {
 				try {
-					if(controller.getBoard().gameOver()) {
-						log("Game over waiting for new game.");
+					if(controller.getBoard() == null || controller.getBoard().gameOver()) {
+						log("Waiting for new game.");
 						syncObject.wait();
 					}
 					
@@ -90,6 +90,14 @@ public class AIThread extends Thread {
 				continue;
 			}
 		}
+	}
+	
+	public static void hurryUp() {
+		REALTIME_PLAY = true;
+	}
+	
+	public static void goSlow() {
+		REALTIME_PLAY = false;
 	}
 
 	private void log(String msg) {

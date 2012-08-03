@@ -53,14 +53,16 @@ public class BoardGUI extends JPanel
     {
       for(int j = 0; j < ROWS; j++)
       {
-        int state = model.getState(i, j);
-        if(state != Board.EMPTY)
-        {
-          if(state == Board.BLACK) g.setColor(Color.BLACK);
-          else g.setColor(Color.WHITE);
-          g.fillOval((int)(i * CELLSIZE + OFFSET * CELLSIZE), (int)(j * CELLSIZE + OFFSET * CELLSIZE),
-                     (int)(CELLSIZE - 2 * OFFSET * CELLSIZE), (int)(CELLSIZE - 2 * OFFSET * CELLSIZE));
-        }
+    	if(model != null) {
+    		int state = model.getState(i, j);
+    		if(state != Board.EMPTY)
+    		{
+    			if(state == Board.BLACK) g.setColor(Color.BLACK);
+    			else g.setColor(Color.WHITE);
+    			g.fillOval((int)(i * CELLSIZE + OFFSET * CELLSIZE), (int)(j * CELLSIZE + OFFSET * CELLSIZE),
+    					(int)(CELLSIZE - 2 * OFFSET * CELLSIZE), (int)(CELLSIZE - 2 * OFFSET * CELLSIZE));
+    		}    		
+    	}
       }
     }
   }  
