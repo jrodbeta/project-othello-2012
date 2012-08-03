@@ -25,7 +25,7 @@ public class PluggableHeuristicAI extends ReversiAI {
 	}
 	
 	public PluggableHeuristicAI() {
-		heuristics.put( new BestScore(), 0.5 );
+		heuristics.put( new BestScore(), 0.25 );
 		heuristics.put( new EvalPosition(BoardGUI.ROWS), 1.0 );
 		heuristics.put( new Mobility(BoardGUI.ROWS), 0.25);
 	}

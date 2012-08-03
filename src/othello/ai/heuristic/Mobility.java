@@ -57,8 +57,10 @@ public class Mobility implements Heuristic {
 			}
 			
 			utilities.put(b, 0.0);
-			
-			int lowestMobilityScore = Collections.min(mobilityBoards.values()).intValue();
+			int lowestMobilityScore = Integer.MAX_VALUE;
+			if(mobilityBoards.size() != 0) {
+				lowestMobilityScore = Collections.min(mobilityBoards.values()).intValue();
+			}
 			
 			if(lowestMobilityScore < maxScore) {
 				maxScore = lowestMobilityScore;
