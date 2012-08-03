@@ -13,6 +13,9 @@ public abstract class ReversiAI
 		String GREEDY = "Greedy";
 		String HEURISTIC = "Heuristic";
 		String PLUGGABLE = "Pluggable";
+		String MINIMAX = "Minimax";
+		String MINIMAX_AB = "Minimax AB";
+		String MINIMAX_AB_HEU = "Minimax AB w/ Heuristic";
 		
 	}
 	

@@ -12,22 +12,23 @@ public class AIController extends Controller {
 
 	private AIThread aiThreads[] = new AIThread[2]; // each thread runs one AI
 
+	private static int boardSize = BoardGUI.ROWS;
+	
 	public static void main(String args[]) {
 		ReversiGUI gui = new ReversiGUI(false);
-		AIController c = new AIController(gui);
-		gui.setController(c);
-		c.update();
-	}
-
-	public AIController(Listener l) {
-		this.l = l;
-		newGame();
-
+		
 		ReversiAI aiWhite = new GreedyHeuristicAI();
-		aiWhite.setSize(b.getSize());
 		
 		ReversiAI aiBlack = new PluggableHeuristicAI();
-		aiBlack.setSize(b.getSize());
+		
+		AIController c = new AIController(gui, aiWhite, aiBlack);
+		gui.setController(c);
+	}
+
+	public AIController(Listener l, ReversiAI aiWhite, ReversiAI aiBlack) {
+		this.l = l;
+		aiWhite.setSize(boardSize);
+		aiBlack.setSize(boardSize);
 
 		aiThreads[0] = new AIThread(aiWhite, this, Board.WHITE);
 		aiThreads[0].start();
