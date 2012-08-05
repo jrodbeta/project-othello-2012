@@ -6,12 +6,14 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -51,6 +53,7 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 	private BoardGUI boardGUI;
 	
 	private boolean testFinished;
+	private JProgressBar progressBar;
 
 	public TestFrame() {
 		super();
@@ -68,9 +71,10 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 		buttonPanel.add(viewGame);
 
 		leftAICombo = new JComboBox(AI);
-		leftAICombo.setBorder(THIN_BORDER);
+		leftAICombo.setBorder(BorderFactory.createTitledBorder("Agent 1"));
+		
 		rightAICombo = new JComboBox(AI);
-		rightAICombo.setBorder(THIN_BORDER);
+		rightAICombo.setBorder(BorderFactory.createTitledBorder("Agent 2"));
 
 		JLabel vsLabel = new JLabel("vs");
 
@@ -87,7 +91,7 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 		controlPanel.add(aiPanel);
 		controlPanel.add(buttonPanel);
 
-		resultsArea = new JTextArea(20, 105);
+		resultsArea = new JTextArea(22, 50);
 		resultsArea.setEditable(false);
 		resultsArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
 
@@ -97,6 +101,15 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 		resultsScrollPane
 				.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		resultScrollBar = resultsScrollPane.getVerticalScrollBar();
+		
+		progressBar = new JProgressBar(0);
+		progressBar.setStringPainted(true);
+		
+		JPanel progressPanel = new JPanel();
+		progressPanel.setLayout(new BorderLayout());
+		progressPanel.add(resultsScrollPane, BorderLayout.CENTER);
+		progressPanel.add(progressBar, BorderLayout.PAGE_START);
+		
 
 		logln("Ready to rock!");
 
@@ -105,7 +118,7 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 		JPanel testingPanel = new JPanel();
 		testingPanel.setLayout(new BorderLayout());
 		testingPanel.add(controlPanel, BorderLayout.PAGE_START);
-		testingPanel.add(resultsScrollPane, BorderLayout.CENTER);
+		testingPanel.add(progressPanel, BorderLayout.CENTER);
 		testingPanel.setBorder(THIN_BORDER);
 
 		contentPane.add(testingPanel, BorderLayout.LINE_START);
@@ -126,6 +139,8 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 	}
 
 	private void runTests() {
+		resultsArea.setText("");
+		
 		String s_leftAI = (String) leftAICombo.getSelectedItem();
 		String s_rightAI = (String) rightAICombo.getSelectedItem();
 
@@ -171,8 +186,19 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 				TestController testController = new TestController(8, leftAI,
 						rightAI);
 				testController.setLogger(TestFrame.this);
-				testController.run(1000);
+				testController.run(500, new TestController.TestObserver() {
+					
+					@Override
+					public void notifyStatus(int percentComplete) {
+						progressBar.setValue(percentComplete);
+						progressBar.setString(percentComplete + "%");
+					}
+				});
 				testController.report();
+				
+				progressBar.setValue(100);
+				progressBar.setString("100%");
+				
 				runTests.setEnabled(true);
 				testFinished = true;
 				AIThread.hurryUp();
