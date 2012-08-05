@@ -159,7 +159,8 @@ public class TestController implements Logger
 			}
 			
 			b = tmp; // save new board
-			observer.notifyBoardChange(b);
+			
+			if(observer != null) observer.notifyBoardChange(b);
 			
 			p = activeAI.getMove();
 			logDebug(b.getActiveName() + " move to (" + p.x + "," + p.y + ").");

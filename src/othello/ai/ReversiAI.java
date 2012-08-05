@@ -30,14 +30,31 @@ public abstract class ReversiAI
 	protected static final int SEED = 1000;
 	
 	protected int size;
-	private Point bestMove;
+	
+	private int bestMove;
+	//private Point bestMove;
 	protected double elapsed = 0.0;
 	protected long start = BAD_TIME;
 	
   public void setSize(int size) { this.size = size; }
-  public Point getMove() { return bestMove; }
-  protected void setMove(int x, int y) { if(x == -1) bestMove = null; else bestMove = new Point(x, y); }
-  protected void setMove(Point p) { bestMove = p; }
+  
+  public Point getMove()
+  {
+  	if(bestMove == -1) return null;
+  	else return new Point(bestMove % size, bestMove / size);
+  }
+  
+  protected void setMove(int x, int y)
+  {
+  	if(x == -1) bestMove = -1;
+  	else bestMove = x + (y * size);
+  }
+  
+  protected void setMove(Point p)
+  {
+  	if(p == null) bestMove = -1;
+  	else bestMove = p.x + p.y * size;
+  }
   
   protected void startTimer() { start = System.currentTimeMillis(); }
   protected void stopTimer()
