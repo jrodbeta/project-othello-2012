@@ -38,6 +38,7 @@ public class OnePlayerController extends Controller
 		active = true;
 		b = new Board(BoardGUI.ROWS);
 		r = new GreedyAI(true);
+
 		r.setSize(b.getSize());
 		update();
 		l.setMessage("New game");

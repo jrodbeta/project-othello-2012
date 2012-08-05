@@ -9,8 +9,20 @@ import othello.model.Board;
 
 public abstract class ReversiAI
 {
+
+	public interface Types {
+		String GREEDY = "Greedy";
+		String HEURISTIC = "Heuristic";
+		String PLUGGABLE = "Pluggable";
+		String MINIMAX = "Minimax";
+		String MINIMAX_AB = "Minimax AB";
+		String MINIMAX_AB_HEU = "Minimax AB w/ Heuristic";
+		
+	}
+	
 	public static final int MAX_SCORE = 1000000;
 	public static final int MIN_SCORE = -1000000;
+
 	private static final int BAD_TIME = -1000;
 	
 	protected static final double OVERRIDE = 0.3;
