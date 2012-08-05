@@ -85,7 +85,7 @@ public class TestController implements Logger
 				observer.notifyStatus(( i + offset) * 100 / n / 2);
 			}
 			
-			play(results);
+			play(results, observer);
 		}
 		
 		if(observer == null) {
@@ -132,7 +132,7 @@ public class TestController implements Logger
 		logger.logln("");
 	}
 	
-	public void play(ResultSet results)
+	public void play(ResultSet results, TestObserver observer)
 	
 	{
 		results.runs++;
@@ -159,6 +159,7 @@ public class TestController implements Logger
 			}
 			
 			b = tmp; // save new board
+			observer.notifyBoardChange(b);
 			
 			p = activeAI.getMove();
 			logDebug(b.getActiveName() + " move to (" + p.x + "," + p.y + ").");
@@ -208,5 +209,6 @@ public class TestController implements Logger
 	
 	public interface TestObserver {
 		void notifyStatus(int percentComplete);
+		void notifyBoardChange(Board board);
 	}
 }

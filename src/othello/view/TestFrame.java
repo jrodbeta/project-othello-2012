@@ -14,13 +14,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import othello.ai.AIThread;
+import othello.ai.EvalLearningAgent;
 import othello.ai.GreedyAI;
 import othello.ai.GreedyHeuristicAI;
 import othello.ai.MinimaxABAI;
@@ -29,7 +29,6 @@ import othello.ai.MinimaxAI;
 import othello.ai.PluggableHeuristicAI;
 import othello.ai.ReversiAI;
 import othello.controller.AIController;
-import othello.controller.Controller;
 import othello.controller.TestController;
 import othello.model.Board;
 import othello.model.Listener;
@@ -49,11 +48,12 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 	public JTextArea resultsArea;
 	private JButton runTests;
 	private JButton viewGame;
-	private JScrollBar resultScrollBar;
 	private BoardGUI boardGUI;
-	
-	private boolean testFinished;
 	private JProgressBar progressBar;
+		
+	private boolean testFinished;
+	
+	private EvalLearningAgent learningAgent;
 
 	public TestFrame() {
 		super();
@@ -100,7 +100,6 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		resultsScrollPane
 				.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		resultScrollBar = resultsScrollPane.getVerticalScrollBar();
 		
 		progressBar = new JProgressBar(0);
 		progressBar.setStringPainted(true);
@@ -183,6 +182,8 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 		new Thread() {
 			@Override
 			public void run() {
+				learningAgent = new EvalLearningAgent(BoardGUI.ROWS);
+				
 				TestController testController = new TestController(8, leftAI,
 						rightAI);
 				testController.setLogger(TestFrame.this);
@@ -193,8 +194,15 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 						progressBar.setValue(percentComplete);
 						progressBar.setString(percentComplete + "%");
 					}
+					
+					@Override
+					public void notifyBoardChange(Board board) {
+						learningAgent.notifyBoardChange(board);
+					}
 				});
+				
 				testController.report();
+				learningAgent.printResults();
 				
 				progressBar.setValue(100);
 				progressBar.setString("100%");
