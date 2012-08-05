@@ -1,6 +1,5 @@
 package othello.ai;
 
-import java.awt.Point;
 import java.util.Random;
 
 import othello.model.Board;
@@ -23,7 +22,7 @@ public class RandomAI extends ReversiAI
   {
   	startTimer();
   	Board b = new Board(prev);
-  	bestMove = null;
+  	setMove(-1, -1);
   	int i, j, c = 0;
   	
   	do // try random moves, until one works, or we exhaust MAX_TRIES attempts
@@ -35,7 +34,7 @@ public class RandomAI extends ReversiAI
   	
   	if(!b.equals(prev))
   	{
-  		bestMove = new Point(i, j);
+  		setMove(i, j);
   		stopTimer();
   		return b;
   	}
@@ -48,7 +47,7 @@ public class RandomAI extends ReversiAI
   			{
   				if(b.move(i, j))
   				{
-  					bestMove = new Point(i, j);
+  					setMove(i, j);
   					stopTimer();
   					return b;
   				}

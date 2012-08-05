@@ -104,7 +104,7 @@ public class MinimaxABAI extends ReversiAI
   	int maxScore = MIN_SCORE;
   	int alpha = MIN_SCORE, beta = MAX_SCORE;
   	Board best = null, b = new Board(prev);
-  	bestMove = null;
+  	setMove(-1,-1);
   	
   	for(int j = 0; j < size; j++)
   	{
@@ -117,7 +117,7 @@ public class MinimaxABAI extends ReversiAI
   				
   				if(score > maxScore || (score == maxScore && r.nextDouble() < OVERRIDE))
   				{
-  					bestMove = new Point(i,j);
+  					setMove(i,j);
   					maxScore = score;
   					best = b;
   				}

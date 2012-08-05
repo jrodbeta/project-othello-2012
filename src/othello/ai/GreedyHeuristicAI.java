@@ -1,5 +1,5 @@
 package othello.ai;
-import java.awt.Point;
+
 import java.util.*;
 
 import othello.model.Board;
@@ -32,6 +32,7 @@ public class GreedyHeuristicAI extends ReversiAI
 	public Board nextMove(Board prev, int lastx, int lasty)
 	{
 		startTimer();
+		setMove(-1, -1);
 	  Board b = new Board(prev), best = null;
 		int color = b.getActive();
 		int score = -1000;
@@ -58,7 +59,7 @@ public class GreedyHeuristicAI extends ReversiAI
 		      {
 		        score = newscore;
 		        best = b;
-		        bestMove = new Point(i,j);
+		        setMove(i,j);
 		      }
 		      b = new Board(prev);
 		    }

@@ -9,8 +9,8 @@ import othello.model.Board;
 
 public abstract class ReversiAI
 {
-	public static final int MAX_SCORE = 1000;
-	public static final int MIN_SCORE = -1000;
+	public static final int MAX_SCORE = 1000000;
+	public static final int MIN_SCORE = -1000000;
 	private static final int BAD_TIME = -1000;
 	
 	protected static final double OVERRIDE = 0.3;
@@ -18,12 +18,14 @@ public abstract class ReversiAI
 	protected static final int SEED = 1000;
 	
 	protected int size;
-	protected Point bestMove;
+	private Point bestMove;
 	protected double elapsed = 0.0;
 	protected long start = BAD_TIME;
 	
   public void setSize(int size) { this.size = size; }
   public Point getMove() { return bestMove; }
+  protected void setMove(int x, int y) { if(x == -1) bestMove = null; else bestMove = new Point(x, y); }
+  protected void setMove(Point p) { bestMove = p; }
   
   protected void startTimer() { start = System.currentTimeMillis(); }
   protected void stopTimer()

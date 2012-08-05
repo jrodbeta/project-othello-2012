@@ -3,10 +3,8 @@ package othello.ai;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import othello.ai.heuristic.BestScore;
 import othello.ai.heuristic.EvalPosition;
@@ -27,7 +25,7 @@ public class PluggableHeuristicAI extends ReversiAI {
 	@Override
 	public Board nextMove(Board prev, int lastx, int lasty) {
 		startTimer();
-		bestMove = null;
+		setMove(-1, -1);
 
 		Board b = new Board(prev);
 
@@ -96,7 +94,8 @@ public class PluggableHeuristicAI extends ReversiAI {
 			}
 		}
 		
-		bestMove = moves.get(bestBoard);
+		Point p = moves.get(bestBoard);
+		setMove(p.x, p.y);
 		stopTimer();
 		return bestBoard;
 	}

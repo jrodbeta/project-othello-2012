@@ -1,5 +1,5 @@
 package othello.ai;
-import java.awt.Point;
+
 import java.util.Random;
 
 import othello.model.Board;
@@ -20,7 +20,7 @@ public class GreedyAI extends ReversiAI
   public Board nextMove(Board prev, int lastx, int lasty)
   {
   	startTimer();
-	  bestMove = null;
+	  setMove(-1,-1);
 	  
     Board b = new Board(prev), best = null;
 
@@ -37,7 +37,7 @@ public class GreedyAI extends ReversiAI
           {
             maxScore = score;
             best = b;
-            bestMove = new Point(i,j);
+            setMove(i,j);
           }
           b = new Board(prev);
         }

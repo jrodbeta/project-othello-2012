@@ -19,8 +19,8 @@ public class TestController
 	
 	public static void main(String args[])
 	{
-		TestController game = new TestController(BoardGUI.ROWS, new MinimaxABHeuristicAI(), new MinimaxABHeuristicAI2());
-		game.run(100);
+		TestController game = new TestController(BoardGUI.ROWS, new MinimaxABHeuristicAIb(5, false), new MinimaxABHeuristicAI(5, false));
+		game.run(10);
 		game.report();
 	}
 	
@@ -108,7 +108,6 @@ public class TestController
 			b.turn(); // next player's turn
 			{ aiTemp = activeAI; activeAI = inactiveAI; inactiveAI = aiTemp; } // switch AIs
 		}
-		
 		log(winnerString(b));
 	}
 	

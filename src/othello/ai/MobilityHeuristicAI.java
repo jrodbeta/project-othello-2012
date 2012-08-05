@@ -1,6 +1,5 @@
 package othello.ai;
 
-import java.awt.Point;
 
 import othello.model.Board;
 
@@ -12,6 +11,7 @@ public class MobilityHeuristicAI extends ReversiAI {
 		startTimer();
 		Board b = new Board(prev), best = null;
 		Board temp;
+		setMove(-1, -1);
 		  
 		int mobility = 0;
 		int lowestMobility = 100;
@@ -41,7 +41,7 @@ public class MobilityHeuristicAI extends ReversiAI {
 					  lowestMobility = mobility;
 					  mobility = 0;
 					  best = b;
-					  bestMove = new Point(i, j);
+					  setMove(i, j);
 				  }
 				  
 				  b = new Board(prev);

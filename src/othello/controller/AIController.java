@@ -23,10 +23,10 @@ public class AIController extends Controller {
 		this.l = l;
 		newGame();
 
-		ReversiAI aiWhite = new GreedyHeuristicAI();
+		ReversiAI aiWhite = new GreedyAI();
 		aiWhite.setSize(b.getSize());
 		
-		ReversiAI aiBlack = new GreedyAI();
+		ReversiAI aiBlack = new RandomAI();
 		aiBlack.setSize(b.getSize());
 
 		aiThreads[0] = new AIThread(aiWhite, this, Board.WHITE);

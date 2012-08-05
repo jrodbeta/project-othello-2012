@@ -32,8 +32,6 @@ public class MinimaxABHeuristicAI extends ReversiAI
   {
 	  int color = b.getActive(), score = 0;
 	  
-	  
-  	
   	for(int y = 0; y < size; y++)
     {
       for(int x = 0; x < size; x++)
@@ -135,7 +133,7 @@ public class MinimaxABHeuristicAI extends ReversiAI
   	int maxScore = MIN_SCORE;
   	int alpha = MIN_SCORE, beta = MAX_SCORE;
   	Board best = null, b = new Board(prev);
-  	bestMove = null;
+  	setMove(-1, -1);
   	
   	for(int j = 0; j < size; j++)
   	{
@@ -148,7 +146,7 @@ public class MinimaxABHeuristicAI extends ReversiAI
   				
   				if(score > maxScore || (score == maxScore && r.nextDouble() < OVERRIDE))
   				{
-  					bestMove = new Point(i,j);
+  					setMove(i,j);
   					maxScore = score;
   					best = b;
   				}
@@ -157,7 +155,7 @@ public class MinimaxABHeuristicAI extends ReversiAI
   		}
   	}
   	//System.out.println("elapsed: " + ((float)(System.currentTimeMillis()-start)/1000));
-  	//System.out.println("moves: " + moves);
+  	//System.out.println("ab " + b.getMoves() + " moves: " + moves);
   	stopTimer();
   	return best;
   }

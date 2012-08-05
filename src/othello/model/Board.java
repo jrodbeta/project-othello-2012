@@ -139,6 +139,23 @@ public class Board
   	return count;
   }
   
+  public int getMoveCount(boolean current)
+  {
+  	int count = 0;
+  	Board tmp = new Board(this);
+  	
+  	if(!current) tmp.turn();
+  	
+  	for(int j = 0; j < size; j++)
+  	{
+  		for(int i = 0; i < size; i++)
+  		{
+  			if(tmp.move(i, j)) count++; // fixme - could be smarter
+  		}
+  	}
+  	return count;
+  }
+  
   public int getEmptyCornerNeighbors(boolean current)
   {
   	int count = 0;
