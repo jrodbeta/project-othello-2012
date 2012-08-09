@@ -13,6 +13,9 @@ public class TestController implements Logger
 	private ReversiAI agent1;	// black AI
 	private ReversiAI agent2;	// white AI
 	
+	private ReversiAI winner;
+	private ReversiAI loser;
+	
 	private ResultSet resultsDirection1 = new ResultSet();
 	private ResultSet resultsDirection2 = new ResultSet();
 	private int boardSize;			// size of game board
@@ -58,6 +61,14 @@ public class TestController implements Logger
 		
 		runSingle(n, resultsDirection2, observer);
 		swapAgents();
+		
+		if(resultsDirection1.bwins + resultsDirection2.wwins > resultsDirection1.wwins + resultsDirection2.bwins) {
+			winner = agent1;
+			loser = agent2;
+		} else {
+			winner = agent2;
+			loser = agent1;
+		}
 	}
 	
 	private void swapAgents() {
@@ -159,7 +170,10 @@ public class TestController implements Logger
 			}
 			
 			b = tmp; // save new board
-			observer.notifyBoardChange(b);
+			
+			if(observer != null) {
+				observer.notifyBoardChange(b);
+			}
 			
 			p = activeAI.getMove();
 			logDebug(b.getActiveName() + " move to (" + p.x + "," + p.y + ").");
@@ -212,4 +226,13 @@ public class TestController implements Logger
 		void notifyStatus(int percentComplete);
 		void notifyBoardChange(Board board);
 	}
+	
+	public ReversiAI getLoser() {
+		return loser;
+	}
+	
+	public ReversiAI getWinner() {
+		return winner;
+	}
+	
 }

@@ -143,11 +143,11 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 		String s_leftAI = (String) leftAICombo.getSelectedItem();
 		String s_rightAI = (String) rightAICombo.getSelectedItem();
 
-		final ReversiAI leftAI = getAI(s_leftAI);
-		final ReversiAI rightAI = getAI(s_rightAI);
+		final ReversiAI leftAI = ReversiAI.getAIByName(s_leftAI);
+		final ReversiAI rightAI = ReversiAI.getAIByName(s_rightAI);
 		
-		final ReversiAI blackAI = getAI(s_leftAI);
-		final ReversiAI whiteAI = getAI(s_rightAI);
+		final ReversiAI blackAI = ReversiAI.getAIByName(s_leftAI);
+		final ReversiAI whiteAI = ReversiAI.getAIByName(s_rightAI);
 		
 		testFinished = false;
 		AIThread.goSlow();
@@ -212,24 +212,6 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 				AIThread.hurryUp();
 			}
 		}.start();
-	}
-
-	private ReversiAI getAI(String aiName) {
-		if (ReversiAI.Types.GREEDY.equals(aiName)) {
-			return new GreedyAI();
-		} else if (ReversiAI.Types.HEURISTIC.equals(aiName)) {
-			return new GreedyHeuristicAI();
-		} else if (ReversiAI.Types.PLUGGABLE.equals(aiName)) {
-			return new PluggableHeuristicAI();
-		} else if (ReversiAI.Types.MINIMAX.equals(aiName)) {
-			return new MinimaxAI();
-		} else if (ReversiAI.Types.MINIMAX_AB.equals(aiName)) {
-			return new MinimaxABAI();
-		} else if (ReversiAI.Types.MINIMAX_AB_HEU.equals(aiName)) {
-			return new MinimaxABHeuristicAI();
-		} else {
-			throw new IllegalArgumentException("Unknown AI");
-		}
 	}
 
 	@Override

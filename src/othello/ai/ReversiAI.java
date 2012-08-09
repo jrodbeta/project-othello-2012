@@ -20,6 +20,24 @@ public abstract class ReversiAI
 		
 	}
 	
+	public static ReversiAI getAIByName(String aiName) {
+		if (ReversiAI.Types.GREEDY.equals(aiName)) {
+			return new GreedyAI();
+		} else if (ReversiAI.Types.HEURISTIC.equals(aiName)) {
+			return new GreedyHeuristicAI();
+		} else if (ReversiAI.Types.PLUGGABLE.equals(aiName)) {
+			return new PluggableHeuristicAI();
+		} else if (ReversiAI.Types.MINIMAX.equals(aiName)) {
+			return new MinimaxAI();
+		} else if (ReversiAI.Types.MINIMAX_AB.equals(aiName)) {
+			return new MinimaxABAI();
+		} else if (ReversiAI.Types.MINIMAX_AB_HEU.equals(aiName)) {
+			return new MinimaxABHeuristicAI();
+		} else {
+			throw new IllegalArgumentException("Unknown AI");
+		}
+	}
+	
 	public static final int MAX_SCORE = 1000000;
 	public static final int MIN_SCORE = -1000000;
 
