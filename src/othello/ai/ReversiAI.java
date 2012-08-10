@@ -11,6 +11,7 @@ public abstract class ReversiAI
 {
 
 	public interface Types {
+		String RANDOM = "Random";
 		String GREEDY = "Greedy";
 		String HEURISTIC = "Heuristic";
 		String PLUGGABLE = "Pluggable";
@@ -22,6 +23,8 @@ public abstract class ReversiAI
 	public static ReversiAI getAIByName(String aiName) {
 		if (ReversiAI.Types.GREEDY.equals(aiName)) {
 			return new GreedyAI();
+		} else if (ReversiAI.Types.RANDOM.equals(aiName)) {
+			return new RandomAI();	
 		} else if (ReversiAI.Types.HEURISTIC.equals(aiName)) {
 			return new GreedyHeuristicAI();
 		} else if (ReversiAI.Types.PLUGGABLE.equals(aiName)) {

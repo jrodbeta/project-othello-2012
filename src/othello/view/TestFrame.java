@@ -33,7 +33,7 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 	private static Border THIN_BORDER = new EmptyBorder(4, 4, 4, 4);
 	//private static Border BORDER = new EmptyBorder(8, 8, 8, 8);
 
-	public static final String AI[] = { ReversiAI.Types.GREEDY,
+	public static final String AI[] = { ReversiAI.Types.GREEDY, ReversiAI.Types.RANDOM,
 			ReversiAI.Types.HEURISTIC, ReversiAI.Types.PLUGGABLE,
 			ReversiAI.Types.MINIMAX, ReversiAI.Types.MINIMAX_AB,
 			ReversiAI.Types.MINIMAX_AB_HEU };
