@@ -54,8 +54,8 @@ public abstract class ReversiAI
 	
 	private int bestMove;
 	
-	protected double elapsed = 0.0;
-	protected long start = BAD_TIME;
+	private double elapsed = 0.0;
+	private long start = BAD_TIME;
 	
 	public long getMoveCount() { return movecount; }
 	

@@ -30,8 +30,11 @@ public class TestController implements Logger
 	
 	public static void main(String args[])
 	{
-		TestController game = new TestController(BoardGUI.ROWS, new MinimaxAI(4, false), new GreedyHeuristicAI(false));
-		game.run(100);
+		ReversiAI black = new MinimaxAI(4, true);
+		ReversiAI white = new GreedyHeuristicAI();
+		
+		TestController game = new TestController(BoardGUI.ROWS, black, white);
+		game.run(20);
 		game.report();
 	}
 	
