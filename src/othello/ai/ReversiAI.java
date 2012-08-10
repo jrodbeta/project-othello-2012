@@ -17,24 +17,26 @@ public abstract class ReversiAI
 		String MINIMAX = "Minimax";
 		String MINIMAX_AB = "Minimax AB";
 		String MINIMAX_AB_HEU = "Minimax AB w/ Heuristic";
-		
 	}
 	
-	public static final int MAX_SCORE = 1000000;
-	public static final int MIN_SCORE = -1000000;
+	public static final int MAX_SCORE = 1000000; // max possible score
+	public static final int MIN_SCORE = -1000000; // min possible score
 
-	private static final int BAD_TIME = -1000;
+	private static final int BAD_TIME = -1000; // sentinel time value
 	
-	protected static final double OVERRIDE = 0.3;
+	protected static final double OVERRIDE = 0.3; // probability that we break tie with new candidate
 	protected static final int DEPTH = 3;
 	protected static final int SEED = 1000;
 	
 	protected int size;
+	protected long movecount = 0;
 	
 	private int bestMove;
-	//private Point bestMove;
+	
 	protected double elapsed = 0.0;
 	protected long start = BAD_TIME;
+	
+	public long getMoveCount() { return movecount; }
 	
   public void setSize(int size) { this.size = size; }
   

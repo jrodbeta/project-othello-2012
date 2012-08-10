@@ -1,5 +1,4 @@
 package othello.ai;
-import java.awt.Point;
 import java.util.*;
 
 import othello.model.Board;
@@ -23,7 +22,7 @@ public class MinimaxABAI extends ReversiAI
   
   private int minMove(Board prev, int depth, int alpha, int beta)
   {
-  	moves++; // fixme
+  	moves++;
   	if(depth > maxDepth) return prev.getScore(); // exceeded maximum depth
   	
   	int minScore = MAX_SCORE;
@@ -41,7 +40,7 @@ public class MinimaxABAI extends ReversiAI
   				//printMsg(false, depth, score, i, j); // fixme
   				
   				if(score < minScore) minScore = score;
-  				if(minScore <= alpha) return minScore;
+  				if(minScore <= alpha) { /*System.out.println("alpha pruned");*/ return minScore; }
   				if(minScore < beta) beta = minScore;
   				
   				b = new Board(prev);
@@ -62,7 +61,7 @@ public class MinimaxABAI extends ReversiAI
   
   private int maxMove(Board prev, int depth, int alpha, int beta)
   {
-  	moves++; // fixme
+  	moves++;
   	if(depth > maxDepth) return prev.getScore(); // exceeded maximum depth
   	
   	int maxScore = MIN_SCORE;
@@ -78,7 +77,7 @@ public class MinimaxABAI extends ReversiAI
   				//printMsg(true, depth, score, i, j); // fixme
   				
   				if(score > maxScore)	maxScore = score;
-  				if(maxScore >= beta) return maxScore;
+  				if(maxScore >= beta) { /*System.out.println("beta pruned");*/ return maxScore; }
   				if(maxScore > alpha) alpha = maxScore;
   				
   				b = new Board(prev);
@@ -99,8 +98,8 @@ public class MinimaxABAI extends ReversiAI
   public Board nextMove(Board prev, int lastx, int lasty)
   {
   	startTimer();
-  	moves = 0; // fixme
-  	long start = System.currentTimeMillis();
+  	moves = 0;
+  	//long start = System.currentTimeMillis();
   	int maxScore = MIN_SCORE;
   	int alpha = MIN_SCORE, beta = MAX_SCORE;
   	Board best = null, b = new Board(prev);
@@ -125,9 +124,19 @@ public class MinimaxABAI extends ReversiAI
   			}
   		}
   	}
+  	movecount += moves;
   	//System.out.println("elapsed: " + ((float)(System.currentTimeMillis()-start)/1000));
   	//System.out.println("moves: " + moves);
   	stopTimer();
   	return best;
   }
+  
+  /*private int printMsg(boolean max, int depth, int score, int x, int y)
+  {
+  	for(int i = 0; i < depth; i++) System.out.print("  ");
+  	if(max) System.out.print("max ");
+  	else System.out.print("min ");
+  	System.out.println("(" + x + "," + y + "): " + score);
+  	return score;
+  }*/
 }

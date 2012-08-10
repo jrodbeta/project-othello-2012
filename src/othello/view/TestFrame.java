@@ -36,7 +36,7 @@ import othello.model.Listener;
 @SuppressWarnings("serial")
 public class TestFrame extends JFrame implements ActionListener, Logger, Listener {
 	private static Border THIN_BORDER = new EmptyBorder(4, 4, 4, 4);
-	private static Border BORDER = new EmptyBorder(8, 8, 8, 8);
+	//private static Border BORDER = new EmptyBorder(8, 8, 8, 8);
 
 	public static final String AI[] = { ReversiAI.Types.GREEDY,
 			ReversiAI.Types.HEURISTIC, ReversiAI.Types.PLUGGABLE,
@@ -53,8 +53,16 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 		
 	private boolean testFinished;
 	
+	private int runcount = 200;
+	
 	private EvalLearningAgent learningAgent;
 
+	public TestFrame(int runs)
+	{
+		this();
+		runcount = runs;
+	}
+	
 	public TestFrame() {
 		super();
 		Container contentPane = getContentPane();
@@ -110,7 +118,7 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 		progressPanel.add(progressBar, BorderLayout.PAGE_START);
 		
 
-		logln("Ready to rock!");
+		logln("Ready");
 
 		boardGUI = new BoardGUI();
 
@@ -187,7 +195,7 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 				TestController testController = new TestController(8, leftAI,
 						rightAI);
 				testController.setLogger(TestFrame.this);
-				testController.run(500, new TestController.TestObserver() {
+				testController.run(runcount, new TestController.TestObserver() {
 					
 					@Override
 					public void notifyStatus(int percentComplete) {

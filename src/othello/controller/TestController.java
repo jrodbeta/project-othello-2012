@@ -27,10 +27,17 @@ public class TestController implements Logger
 	
 	public static void main(String args[])
 	{
-		TestController game = new TestController(BoardGUI.ROWS, new MinimaxABHeuristicAI(), new MinimaxABHeuristicAI());
+		TestController game = new TestController(BoardGUI.ROWS, new MinimaxAI(4, false), new GreedyHeuristicAI(false));
 		game.run(100);
-		
 		game.report();
+		/*for(int i = 1; i <= 11; i++)
+		{
+			ReversiAI blackAI = new MinimaxABHeuristicAI(i, true);
+			ReversiAI whiteAI = new GreedyAI(true);
+			TestController game = new TestController(BoardGUI.ROWS, blackAI, whiteAI);
+			game.run(1);
+			System.out.println(i + " time: " + blackAI.getElapsedTime() + " moves: " + blackAI.getMoveCount());
+		}*/
 	}
 	
 	// create a new tester, with a given size and specified AIs for black and white

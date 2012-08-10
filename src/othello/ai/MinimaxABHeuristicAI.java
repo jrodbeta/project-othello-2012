@@ -1,5 +1,5 @@
 package othello.ai;
-import java.awt.Point;
+
 import java.util.*;
 
 import othello.model.Board;
@@ -47,12 +47,12 @@ public class MinimaxABHeuristicAI extends ReversiAI
   private int[][] weights = {
 			{50,  -1, 5, 2}, 
 			{-1, -10, 1, 1},
-                  {5,    1, 1, 1}, 
-                  {2,    1, 1, 0}};
+      {5,    1, 1, 1}, 
+      {2,    1, 1, 0}};
   
   private int minMove(Board prev, int depth, int alpha, int beta)
   {
-  	moves++; // fixme
+  	moves++;
   	if(depth > maxDepth) return getCost(prev); // exceeded maximum depth
   	
   	int minScore = MAX_SCORE;
@@ -91,7 +91,7 @@ public class MinimaxABHeuristicAI extends ReversiAI
   
   private int maxMove(Board prev, int depth, int alpha, int beta)
   {
-  	moves++; // fixme
+  	moves++;
   	if(depth > maxDepth) return getCost(prev); // exceeded maximum depth
   	
   	int maxScore = MIN_SCORE;
@@ -128,8 +128,8 @@ public class MinimaxABHeuristicAI extends ReversiAI
   public Board nextMove(Board prev, int lastx, int lasty)
   {
   	startTimer();
-  	moves = 0; // fixme
-  	long start = System.currentTimeMillis();
+  	moves = 0;
+  	//long start = System.currentTimeMillis();
   	int maxScore = MIN_SCORE;
   	int alpha = MIN_SCORE, beta = MAX_SCORE;
   	Board best = null, b = new Board(prev);
@@ -155,7 +155,8 @@ public class MinimaxABHeuristicAI extends ReversiAI
   		}
   	}
   	//System.out.println("elapsed: " + ((float)(System.currentTimeMillis()-start)/1000));
-  	//System.out.println("ab " + b.getMoves() + " moves: " + moves);
+  	//System.out.println("alpha-beta " + b.getMoves() + " moves: " + moves);
+  	movecount += moves;
   	stopTimer();
   	return best;
   }
