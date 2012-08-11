@@ -17,6 +17,8 @@ public abstract class ReversiAI
 		String PLUGGABLE = "Pluggable";
 		String MINIMAX = "Minimax";
 		String MINIMAX_AB = "Minimax AB";
+		String MINIMAX_AB_ORD = "Minimax AB w/ Branch ordering";
+		String MINIMAX_AB_MCUT = "Minimax AB w/ Prob. multicut pruning";
 		String MINIMAX_AB_HEU = "Minimax AB w/ Heuristic";
 	}
 	
@@ -33,6 +35,10 @@ public abstract class ReversiAI
 			return new MinimaxAI();
 		} else if (ReversiAI.Types.MINIMAX_AB.equals(aiName)) {
 			return new MinimaxABAI();
+		} else if (ReversiAI.Types.MINIMAX_AB_ORD.equals(aiName)) {
+			return new MinimaxABAIOrdered();
+		} else if (ReversiAI.Types.MINIMAX_AB_MCUT.equals(aiName)) {
+			return new MinimaxABAIMulticut();
 		} else if (ReversiAI.Types.MINIMAX_AB_HEU.equals(aiName)) {
 			return new MinimaxABHeuristicAI();
 		} else {

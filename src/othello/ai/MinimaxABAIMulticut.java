@@ -6,10 +6,15 @@ import othello.model.Board;
 
 // Minimax search, with alpha-beta pruning
 // uses the multi-cut prob method
+
+// first explore the tree to a fixed depth
+// then prune unpromising candidates early before doing a full exploration
 public class MinimaxABAIMulticut extends ReversiAI
 {
   private int maxDepth;
   private int moves;
+  
+  private final int INIT_DEPTH = 4; // initial depth
   
   private Random r = new Random();
   
@@ -146,7 +151,7 @@ public class MinimaxABAIMulticut extends ReversiAI
   	setMove(-1,-1);
   	
   	// initial exploration
-  	maxDepth = 4;
+  	maxDepth = INIT_DEPTH;
   	for(int j = 0; j < size; j++)
   	{
   		for(int i = 0; i < size; i++)

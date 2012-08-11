@@ -35,8 +35,8 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 
 	public static final String AI[] = { ReversiAI.Types.GREEDY, ReversiAI.Types.RANDOM,
 			ReversiAI.Types.HEURISTIC, ReversiAI.Types.PLUGGABLE,
-			ReversiAI.Types.MINIMAX, ReversiAI.Types.MINIMAX_AB,
-			ReversiAI.Types.MINIMAX_AB_HEU };
+			ReversiAI.Types.MINIMAX, ReversiAI.Types.MINIMAX_AB, ReversiAI.Types.MINIMAX_AB_ORD,
+			ReversiAI.Types.MINIMAX_AB_MCUT, ReversiAI.Types.MINIMAX_AB_HEU };
 
 	public JComboBox leftAICombo;
 	public JComboBox rightAICombo;
