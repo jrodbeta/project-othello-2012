@@ -30,7 +30,7 @@ public class TestController implements Logger
 	
 	public static void main(String args[])
 	{
-		ReversiAI black = new MinimaxAI(4, true);
+		ReversiAI black = new MinimaxAI(6, true);
 		ReversiAI white = new GreedyHeuristicAI();
 		
 		TestController game = new TestController(BoardGUI.ROWS, black, white);
