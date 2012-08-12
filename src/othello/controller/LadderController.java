@@ -1,6 +1,7 @@
 package othello.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import othello.ai.ReversiAI;
@@ -10,14 +11,21 @@ import othello.view.TestFrame;
 
 public class LadderController {
 	
-	private static class Score {
+	private static class Score implements Comparable<Score>{
 		private String aiName;
-		private int score;
+		private Integer score = new Integer(0);
 		
 		public Score(String aiName) {
 			this.aiName = aiName;
 		}
+
+		@Override
+		public int compareTo(Score score) {
+			return this.score.compareTo(score.score);
+		}
 	}
+
+	private static final int FOLDS = 5;
 	
 	public static void main(String[] args) {
 		LadderController ladder = new LadderController();
@@ -55,33 +63,36 @@ public class LadderController {
 		
 		int n = scores.size();
 		int current;
-		int total = (n * n) - n;
-		for(int i = 0; i < n; i++) {
-			for(int j = i + 1; j < n; j++) {
-				if(i == j) {
-					continue;
+		int totalPerFold = ((n * n) - n);
+		int total = totalPerFold * FOLDS;
+		
+		for(int iterations = 0; iterations < FOLDS; iterations++) {
+			for(int i = 0; i < n; i++) {
+				for(int j = i + 1; j < n; j++) {
+					if(i == j) {
+						continue;
+					}
+					left = scores.get(i);
+					right = scores.get(j);
+					
+					ReversiAI agent1 = ReversiAI.getAIByName(left.aiName);
+					ReversiAI agent2 = ReversiAI.getAIByName(right.aiName);
+					
+					TestController tester = new TestController(8, agent1, agent2);
+					tester.run(20, observer);
+					
+					left.score += tester.getAgent1Wins();
+					right.score += tester.getAgent2Wins();
+					
+					current = (iterations * totalPerFold) + (i * n) + j;
+					
+					percentComplete = (current * 100) / (total);
+					System.out.println("Complete: " + percentComplete + "% - " + left.aiName + " vs. " + right.aiName + ", Winner: " + tester.getWinner().getClass().getSimpleName());
 				}
-				left = scores.get(i);
-				right = scores.get(j);
-				
-				ReversiAI agent1 = ReversiAI.getAIByName(left.aiName);
-				ReversiAI agent2 = ReversiAI.getAIByName(right.aiName);
-				
-				TestController tester = new TestController(8, agent1, agent2);
-				tester.run(20, observer);
-				
-				if(tester.getWinner() == agent1) {
-					left.score += 10;
-				} else {
-					right.score += 10;
-				}
-				
-				current = (i * n) + j;
-				
-				percentComplete = current * 100 / (total);
-				System.out.println("Complete: " + percentComplete + "% - " + left.aiName + " vs. " + right.aiName);
 			}
 		}
+		
+		Collections.sort(scores);
 		
 		for(Score score : scores) {
 			System.out.println(score.aiName + " : " + score.score);

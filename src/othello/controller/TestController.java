@@ -120,6 +120,17 @@ public class TestController implements Logger
 	public void report() {
 		report(resultsDirection1);
 		report(resultsDirection2);
+		
+		logger.logln(agent1.getClass().getSimpleName() + ": " + getAgent1Wins());
+		logger.logln(agent2.getClass().getSimpleName() + ": " + getAgent2Wins());
+	}
+	
+	public int getAgent1Wins() {
+		return (resultsDirection1.bwins + resultsDirection2.wwins);
+	}
+	
+	public int getAgent2Wins() {
+		return (resultsDirection1.wwins + resultsDirection2.bwins);
 	}
 	
 	// display win/loss statistics for runs completed by the tester
