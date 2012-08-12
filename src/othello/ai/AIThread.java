@@ -7,7 +7,7 @@ import othello.model.Board;
 
 public class AIThread extends Thread {
 
-	private static final int MIN_WAIT = 50;
+	private static final int MIN_WAIT = 1000;
 	private static boolean REALTIME_PLAY = false; // move in real time
 	
 	public static String syncObject = "Doh!";
