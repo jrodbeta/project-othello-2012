@@ -15,6 +15,10 @@ public class MinimaxABHeuristicAI extends ReversiAI
   
   public MinimaxABHeuristicAI() { this(DEPTH, false); }
   
+  public MinimaxABHeuristicAI(int depth) {
+	  this(depth, false);
+  }
+  
   public MinimaxABHeuristicAI(int depth, boolean deterministic)
   {
   	if(deterministic) r = new Random(SEED);
