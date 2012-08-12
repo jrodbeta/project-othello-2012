@@ -31,10 +31,10 @@ import othello.model.Listener;
 public class TestFrame extends JFrame implements ActionListener, Logger, Listener {
 	private static Border THIN_BORDER = new EmptyBorder(4, 4, 4, 4);
 
-	public static final String AI[] = { ReversiAI.Types.GREEDY,
+	public static final String AI[] = { ReversiAI.Types.GREEDY, ReversiAI.Types.RANDOM,
 			ReversiAI.Types.HEURISTIC, ReversiAI.Types.PLUGGABLE,
-			ReversiAI.Types.MINIMAX, ReversiAI.Types.MINIMAX_AB,
-			ReversiAI.Types.MINIMAX_AB_HEU };
+			ReversiAI.Types.MINIMAX, ReversiAI.Types.MINIMAX_AB, ReversiAI.Types.MINIMAX_AB_ORD,
+			ReversiAI.Types.MINIMAX_AB_MCUT, ReversiAI.Types.MINIMAX_AB_HEU };
 
 	public JComboBox leftAICombo;
 	public JComboBox rightAICombo;
@@ -46,8 +46,16 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 		
 	private boolean testFinished;
 	
+	private int runcount = 200;
+	
 	private EvalLearningAgent learningAgent;
 
+	public TestFrame(int runs)
+	{
+		this();
+		runcount = runs;
+	}
+	
 	public TestFrame() {
 		super();
 		Container contentPane = getContentPane();
@@ -103,7 +111,7 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 		progressPanel.add(progressBar, BorderLayout.PAGE_START);
 		
 
-		logln("Ready to rock!");
+		logln("Ready");
 
 		boardGUI = new BoardGUI();
 
@@ -180,7 +188,7 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 				TestController testController = new TestController(8, leftAI,
 						rightAI);
 				testController.setLogger(TestFrame.this);
-				testController.run(500, new TestController.TestObserver() {
+				testController.run(runcount, new TestController.TestObserver() {
 					
 					@Override
 					public void notifyStatus(int percentComplete) {

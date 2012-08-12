@@ -7,7 +7,7 @@ import othello.model.Board;
 public class MinimaxAI extends ReversiAI
 {
   private int maxDepth;
-  //private int moves;
+  private int moves;
   
   private Random r = new Random();
   
@@ -21,7 +21,7 @@ public class MinimaxAI extends ReversiAI
   
   private int minMove(Board prev, int depth)
   {
-  	//moves++;
+  	moves++;
   	if(depth > maxDepth) return prev.getScore(); // exceeded maximum depth
   	
   	int minScore = MAX_SCORE;
@@ -58,7 +58,7 @@ public class MinimaxAI extends ReversiAI
   
   private int maxMove(Board prev, int depth)
   {
-  	//moves++;
+  	moves++;
   	if(depth > maxDepth) return prev.getScore(); // exceeded maximum depth
   	
   	int maxScore = MIN_SCORE;
@@ -93,7 +93,7 @@ public class MinimaxAI extends ReversiAI
   public Board nextMove(Board prev, int lastx, int lasty)
   {
   	startTimer();
-  	//moves = 0;
+  	moves = 0;
   	//long start = System.currentTimeMillis();
   	int maxScore = MIN_SCORE;
   	Board best = null, b = new Board(prev);
@@ -120,6 +120,7 @@ public class MinimaxAI extends ReversiAI
   	}
   	//System.out.println("elapsed: " + ((float)(System.currentTimeMillis()-start)/1000));
   	//System.out.println("moves: " + moves);
+  	movecount += moves;
   	stopTimer();
   	return best;
   }

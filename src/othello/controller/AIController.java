@@ -17,9 +17,9 @@ public class AIController extends Controller {
 	public static void main(String args[]) {
 		ReversiGUI gui = new ReversiGUI(false);
 		
-		ReversiAI aiWhite = new GreedyHeuristicAI();
+		ReversiAI aiWhite = new MinimaxAI(5, false);
 		
-		ReversiAI aiBlack = new PluggableHeuristicAI();
+		ReversiAI aiBlack = new MinimaxAI(5, false);
 		
 		AIController c = new AIController(gui, aiWhite, aiBlack);
 		gui.setController(c);

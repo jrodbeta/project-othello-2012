@@ -267,37 +267,6 @@ public class Board
     }
   }
   
-  long NumberOfSetBits(long i)
-  {
-      i = i - ((i >> 1) & 0x5555555555555555L);
-      i = (i & 0x3333333333333333L) + ((i >> 2) & 0x3333333333333333L);
-      return (((i + (i >> 4)) & 0xF0F0F0F0F0F0F0FL) * 0x101010101010101L) >> 56;
-  }
-  
-  public int getPieceCount()
-  {
-  	return (int)NumberOfSetBits(active_board) - (int)NumberOfSetBits(inactive_board);
-  }
-  
-  // hash function - from Thomas Wang - http://www.concentric.net/~ttwang/tech/inthash.htm
-  private int hash6432shift(long key)
-  {
-    key = (~key) + (key << 18); // key = (key << 18) - key - 1;
-    key = key ^ (key >>> 31);
-    key = key * 21; // key = (key + (key << 2)) + (key << 4);
-    key = key ^ (key >>> 11);
-    key = key + (key << 6);
-    key = key ^ (key >>> 22);
-    return (int) key;
-  }
-  
-  public int hashCode()
-  {
-  	long i = hash6432shift(active_board);
-  	i = (i << 32) | hash6432shift(inactive_board);
-  	return hash6432shift(i);
-  }
-  
   // update piece counts for current player capturing 'flipped' pieces
   private void updateCount(int flipped)
   {

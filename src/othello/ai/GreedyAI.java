@@ -32,6 +32,7 @@ public class GreedyAI extends ReversiAI
       {
         if(b.move(i, j)) // valid move
         {
+        	movecount++;
         	int score = b.getScore();
           if(score > maxScore || (score == maxScore && r.nextDouble() < OVERRIDE))
           {

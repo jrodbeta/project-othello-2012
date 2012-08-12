@@ -30,9 +30,11 @@ public class TestController implements Logger
 	
 	public static void main(String args[])
 	{
-		TestController game = new TestController(BoardGUI.ROWS, new MinimaxABHeuristicAI(), new MinimaxABHeuristicAI());
-		game.run(100);
+		ReversiAI black = new MinimaxABAI();
+		ReversiAI white = new GreedyHeuristicAI();
 		
+		TestController game = new TestController(BoardGUI.ROWS, black, white);
+		game.run(20);
 		game.report();
 	}
 	
@@ -182,9 +184,8 @@ public class TestController implements Logger
 			
 			b = tmp; // save new board
 			
-			if(observer != null) {
-				observer.notifyBoardChange(b);
-			}
+
+			if(observer != null) observer.notifyBoardChange(b);
 			
 			p = activeAI.getMove();
 			logDebug(b.getActiveName() + " move to (" + p.x + "," + p.y + ").");
