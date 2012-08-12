@@ -30,7 +30,7 @@ public class MinimaxABAIMulticut extends ReversiAI
   private int minMove(Board prev, int depth, int alpha, int beta)
   {
   	moves++; // fixme
-  	if(depth > maxDepth) return prev.getScore(); // exceeded maximum depth
+  	if(depth >= maxDepth) return prev.getScore(); // exceeded maximum depth
   	
   	int minScore = MAX_SCORE;
   	Board b = new Board(prev);
@@ -68,7 +68,7 @@ public class MinimaxABAIMulticut extends ReversiAI
   private int maxMove(Board prev, int depth, int alpha, int beta)
   {
   	moves++;
-  	if(depth > maxDepth) return prev.getScore(); // exceeded maximum depth
+  	if(depth >= maxDepth) return prev.getScore(); // exceeded maximum depth
   	
   	int maxScore = MIN_SCORE;
   	Board b = new Board(prev);
