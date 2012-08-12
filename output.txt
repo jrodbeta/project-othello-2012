@@ -1,0 +1,51 @@
+OthelloTester:
+Black: PluggableHeuristicAI (3.27s)
+White: GreedyHeuristicAI (0.17s)
+
+Winner Statistics
+Player  Wins
+Black   170
+White   30
+Tie     0
+Total   200
+
+Black: GreedyHeuristicAI (0.17s)
+White: PluggableHeuristicAI (3.27s)
+
+Winner Statistics
+Player  Wins
+Black   93
+White   80
+Tie     27
+Total   200
+
+PluggableHeuristicAI: 250
+GreedyHeuristicAI: 123
+
+
+
+LadderController:
+Complete: 0% - Greedy vs. Random, Winner: GreedyAI
+Complete: 0% - Greedy vs. Heuristic, Winner: GreedyHeuristicAI
+Complete: 0% - Greedy vs. Pluggable, Winner: PluggableHeuristicAI
+Complete: 1% - Greedy vs. Minimax, Winner: MinimaxAI
+Complete: 1% - Greedy vs. Minimax AB, Winner: MinimaxABAI
+...
+...
+...
+Complete: 92% - Minimax vs. Minimax AB w/ Heuristic, Winner: MinimaxABHeuristicAI
+Complete: 94% - Minimax AB vs. Minimax AB w/ Branch ordering, Winner: MinimaxABAI
+Complete: 94% - Minimax AB vs. Minimax AB w/ Prob. multicut pruning, Winner: MinimaxABAIMulticut
+Complete: 94% - Minimax AB vs. Minimax AB w/ Heuristic, Winner: MinimaxABHeuristicAI
+Complete: 96% - Minimax AB w/ Branch ordering vs. Minimax AB w/ Prob. multicut pruning, Winner: MinimaxABAIMulticut
+Complete: 97% - Minimax AB w/ Branch ordering vs. Minimax AB w/ Heuristic, Winner: MinimaxABHeuristicAI
+Complete: 99% - Minimax AB w/ Prob. multicut pruning vs. Minimax AB w/ Heuristic, Winner: MinimaxABHeuristicAI
+Random	229	0.1300000000000001
+Greedy	275	0.34800000000000025
+Minimax AB w/ Prob. multicut pruning	804	166.61300000000344
+Minimax AB	820	36.39500000000269
+Minimax AB w/ Branch ordering	821	43.1439999999977
+Minimax	823	113.69500000001165
+Heuristic	851	0.6750000000000005
+Pluggable	961	17.46799999999864
+Minimax AB w/ Heuristic	1450	96.0140000000092

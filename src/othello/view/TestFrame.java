@@ -69,7 +69,6 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
 		buttonPanel.add(runTests);
-		buttonPanel.add(viewGame);
 
 		leftAICombo = new JComboBox(AI);
 		leftAICombo.setBorder(BorderFactory.createTitledBorder("Agent 1"));

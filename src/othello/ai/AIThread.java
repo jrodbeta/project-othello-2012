@@ -7,7 +7,7 @@ import othello.model.Board;
 
 public class AIThread extends Thread {
 
-	private static final int MIN_WAIT = 1000;
+	private static final int MIN_WAIT = 100;
 	private static boolean REALTIME_PLAY = false; // move in real time
 	
 	public static String syncObject = "Doh!";
@@ -82,9 +82,11 @@ public class AIThread extends Thread {
 				}
 
 				Point move = ai.getMove();
-				log("Place piece at : " + move.toString());
-				controller.move(move.x, move.y);
-
+				
+				if(move != null) {
+					log("Place piece at : " + move.toString());
+					controller.move(move.x, move.y);
+				}
 			} else {
 				log("Not my turn.");
 				// It's not this AI's turn so continue on.

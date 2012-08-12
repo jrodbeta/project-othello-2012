@@ -14,9 +14,11 @@ public class LadderController {
 	private static class Score implements Comparable<Score>{
 		private String aiName;
 		private Integer score = new Integer(0);
+		private ReversiAI ai;
 		
 		public Score(String aiName) {
 			this.aiName = aiName;
+			this.ai = ReversiAI.getAIByName(aiName);
 		}
 
 		@Override
@@ -75,8 +77,8 @@ public class LadderController {
 					left = scores.get(i);
 					right = scores.get(j);
 					
-					ReversiAI agent1 = ReversiAI.getAIByName(left.aiName);
-					ReversiAI agent2 = ReversiAI.getAIByName(right.aiName);
+					ReversiAI agent1 = left.ai;
+					ReversiAI agent2 = right.ai;
 					
 					TestController tester = new TestController(8, agent1, agent2);
 					tester.run(20, observer);
@@ -95,7 +97,7 @@ public class LadderController {
 		Collections.sort(scores);
 		
 		for(Score score : scores) {
-			System.out.println(score.aiName + " : " + score.score);
+			System.out.println(score.aiName + "\t" + score.score + "\t" + score.ai.getElapsedTime());
 		}
 	}
 
