@@ -21,12 +21,6 @@ import javax.swing.border.EmptyBorder;
 
 import othello.ai.AIThread;
 import othello.ai.EvalLearningAgent;
-import othello.ai.GreedyAI;
-import othello.ai.GreedyHeuristicAI;
-import othello.ai.MinimaxABAI;
-import othello.ai.MinimaxABHeuristicAI;
-import othello.ai.MinimaxAI;
-import othello.ai.PluggableHeuristicAI;
 import othello.ai.ReversiAI;
 import othello.controller.AIController;
 import othello.controller.TestController;
@@ -36,7 +30,6 @@ import othello.model.Listener;
 @SuppressWarnings("serial")
 public class TestFrame extends JFrame implements ActionListener, Logger, Listener {
 	private static Border THIN_BORDER = new EmptyBorder(4, 4, 4, 4);
-	private static Border BORDER = new EmptyBorder(8, 8, 8, 8);
 
 	public static final String AI[] = { ReversiAI.Types.GREEDY,
 			ReversiAI.Types.HEURISTIC, ReversiAI.Types.PLUGGABLE,
@@ -202,8 +195,6 @@ public class TestFrame extends JFrame implements ActionListener, Logger, Listene
 				});
 				
 				testController.report();
-				learningAgent.printResults();
-				
 				progressBar.setValue(100);
 				progressBar.setString("100%");
 				
