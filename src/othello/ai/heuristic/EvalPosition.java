@@ -17,26 +17,6 @@ public class EvalPosition implements Heuristic {
 			{  11, -4,  2,  2 }, 
 			{  8,   1,  2, -3 } };
 
-
-//	private int[][] weights = { 
-//			{  0,  -2,  -3,  -4  }, 
-//			{ -2,  -11, -14, -16 },
-//			{ -3,  -14, -24, -30 }, 
-//			{ -4,  -16, -30, -48 } };
-	/*
-Greedy vs Greedy
-0		1856	2909	3720	
-1852	10779	14256	15857	
-3000	14098	24297	28839	
-3939	16229	30011	47612	
-
--0	-2	-3	-4	
--2	-11	-14	-16	
--3	-14	-24	-29	
--4	-16	-30	-48
-	 */
-
-
 	public int cost(int x, int y) {
 		if (x > (size - 1) / 2)
 			x = (size - 1) - x; // deal with symmetry
